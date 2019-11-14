@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <script src="./scripts/top-bar.js"></script>
+  </head>
+  <body>
+    <h1>Home</h1>
+
+ <!--<p><a href=./file.html>Load File</a></p> -->
+ <button id="files" class="menu" onclick="location.href='./files.html';"><img src=./assets/icon.png width=30 ><br>View Files</button>
+ <button id="settings" class="menu" onclick="location.href='./settings.html';"><img src=./assets/settings.png width=30 ><br>Settings</button>
+<p id=dev></p>
+   <script>if(require('electron').remote.getGlobal('isDevelopment'))document.getElementById('dev').innerHTML = "<a href=\"./dev/index.html\">Dev Menu</a>"</script>
+  </body>
+</html>

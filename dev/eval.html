@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Dev Eval</title>
+    <script src="./top-bar.js"></script>
+  </head>
+  <body>
+    <h1>Dev Eval</h1>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+  
+    <p id="total"><script>
+      // You can also require other files to run in this process
+      
+function execute (){
+    ( async () => {
+    let code=document.getElementById('box').value
+    let evaled
+    try{ evaled = await eval(code);
+        console.log(evaled)
+    if (typeof evaled !== "string") {
+      evaled = require("util").inspect(evaled, {"depth": 10});
+    }}catch(err) {
+    if (typeof err !== "string") {
+      evaled = require("util").inspect(err);
+    }}
+    document.getElementById('output').innerHTML = evaled
+})()}
+function executeAsync (){
+    ( async () => {
+    let code=document.getElementById('box').value
+    let evaled
+    try{ evaled = await eval("( async () => {return " + code + "})()");
+        console.log(evaled)
+    if (typeof evaled !== "string") {
+      evaled = require("util").inspect(evaled, {"depth": 10});
+    }}catch(err) {
+    if (typeof err !== "string") {
+      evaled = require("util").inspect(err);
+    }}
+    document.getElementById('output').innerHTML = evaled
+})()
+}
+    </script>
+    <noscript>oof. Please enable scripts</noscript></p>
+    <p><textarea id="box" rows="10" cols="30"></textarea><br>
+    <button type="button" onclick="execute()">Eval!</button>
+    <button type="button" onclick="executeAsync()">Async Eval!</button>
+    <br>Output:</p>
+    <p id=output ></p>
+    <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=../assets/home.png width=30 ><br>< back home</button></p>
+
+  </body>
+</html>
