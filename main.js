@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const isDevelopment = global.isDevelopment = false
-const path = require('path');o
+const path = require('path');
 __dirname =path.resolve(__dirname).toString()
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 
