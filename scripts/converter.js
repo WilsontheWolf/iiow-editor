@@ -18,12 +18,25 @@ function convertSave(save, version) {
 
 function convert5(save) {
 console.log('5')
+console.log(client.parse_island(save))
 }
 
 function convert62(save) {
 console.log('6.2')
+let iisland = save.player.data.split(' ')
+for (i = 0; i < 8; i++) {
+    iisland.shift()
+  }
+  console.log(iisland)
+console.log(client.parse_island(iisland, null, true))
 }
 
 function convert64(save) {
 console.log('6.4')
+let iisland = save.player.data.split(' ')
+for (i = 0; i < 9; i++) {
+    iisland.shift()
+  }
+  console.log(iisland)
+console.log(client.parse_island(iisland, null, true))
 }

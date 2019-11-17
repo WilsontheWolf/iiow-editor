@@ -44,7 +44,7 @@ module.exports = (client) => {
     
     }
  
-    client.parse_island = (file, object = true) => {  
+    client.parse_island = (file, object = true, island = false) => {  
       try{
         let parsed_save = {
           "block": [],
@@ -52,9 +52,14 @@ module.exports = (client) => {
           "keybind": [],
         };
         let save_file 
-        if(!object) save_file = client.readFile(file);
-        else save_file = file
-        let buffer = save_file.island.island.split(' ');
+        if(!island){
+          if(!object) save_file = client.readFile(file);
+          else save_file = file
+        }
+        let buffer
+        if(!island) buffer = save_file.island.island.split(' ');
+        else buffer = file
+        console.log(file,object,island)
         let bufferCount = 0;
         parsed_save.coreX = buffer[bufferCount];
         bufferCount++;
