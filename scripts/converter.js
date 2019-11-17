@@ -39,14 +39,21 @@ module.exports = (file, fileLocation =`${require('electron').remote.getGlobal('l
   for (i = 0; i < 8; i++) {
       extra.push(iisland.shift())
     }
-    extra.push(0)
+    extra.push("0")
     let island = client.parse_island(iisland, null, true)
     island.extra = extra
     let resources = []
   save.resources.resources.split(" ").forEach(r => {
     if(r) resources.push(parseFloat(r))
   })
+  let realm = {v: parseFloat(save.exists.version), data: save.realm, realm:1}
   let inventory = save.inventory
+  return {
+    island:island,
+    resources:resources,
+    inventory:inventory,
+    realm:realm
+  }
   }
   
   function convert64(save) {
