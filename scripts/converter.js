@@ -17,7 +17,6 @@ module.exports = () =>{
   }
   
   function convert5(save) {
-  console.log('5')
   let island = client.parse_island(save)
   let resources = []
   save.resources.resources.split(" ").forEach(r => {
@@ -35,7 +34,6 @@ module.exports = () =>{
   }
   
   function convert62(save) {
-  console.log('6.2')
   let island = save.player.data.split(' ')
   let extra = []
   for (i = 0; i < 8; i++) {
@@ -61,7 +59,6 @@ module.exports = () =>{
   }
   
   function convert64(save) {
-    console.log('6.4')
     let iisland = save.player.data.split(' ')
     let extra = []
     for (i = 0; i < 9; i++) {
