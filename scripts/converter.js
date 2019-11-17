@@ -6,4 +6,15 @@ client = {}
 require('./functions')(client)
 let save = client.readLocalFile(fileLocation)
 console.log(save,file,fileLocation)
+let version = parseFloat(save.exists.version)
+if(!version) return new Error('Error reading version!')
+convertSave(save, version)
+}
+function convertSave(save, version) {
+  if(version <= 5) return convert5(save)
+  
+}
+
+function convert5(save) {
+
 }
