@@ -59,7 +59,6 @@ module.exports = (client) => {
         let buffer
         if(!island) buffer = save_file.island.island.split(' ');
         else buffer = file
-        console.log(file,object,island)
         let bufferCount = 0;
         parsed_save.coreX = buffer[bufferCount];
         bufferCount++;
