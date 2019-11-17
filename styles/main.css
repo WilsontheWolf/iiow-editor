@@ -1,0 +1,65 @@
+        body {
+            padding: 0px;
+            margin: 0px;
+            background-color: #36393f;
+            color: white;
+        }
+        
+                #title-bar {
+                -webkit-app-region: drag;
+                height: 20px;
+                text-align: center;
+                line-height: 20px;
+                vertical-align: middle;
+                background-color: #202124;
+                padding: none;
+                margin: 0px;
+                position: fixed;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+            }
+
+            #title {
+                position: fixed;
+                top: 0px;
+                left: 20px;
+                color:white;
+
+            }
+
+            button {
+                color: white;
+                background-color: transparent;
+                border-color: transparent;
+            }
+
+            button:hover { filter: brightness(85%); }
+
+            button.nohover:hover { filter: brightness(100%); }
+            
+            button.title-bar-btns {
+                top: 0px;
+                position: fixed;
+                width: 20px;
+                height: 20px;
+                color: white;
+                background-color: #202124;
+                border-color: transparent;
+                -webkit-app-region: no-drag;
+            }
+            textarea {
+                color: white;
+                background-color: #36393f;
+                border-color: #202124;
+            }
+            select {
+                color: white;
+                background-color: #36393f;
+                border-color: #202124; 
+            }
+            select:disabled {
+                color: white;
+                background-color: #202124;
+                border-color: #202124;
+            }
