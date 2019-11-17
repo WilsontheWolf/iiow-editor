@@ -109,4 +109,51 @@ module.exports = (client) => {
   
   // `await client.wait(1000);` to "pause" for 1 second.
   client.wait = require("util").promisify(setTimeout);
+
+  client.parse_inv = (inv, v) => {
+
+  }
+  
+  client.getIds = (v) => {
+    try{
+      return require(`../assets/ids/${v}.json`)
+    }
+    catch (e){
+      return
+    }
+  }
+
+  client.parse_islandId = (island, v) => {
+    let ids = client.getIds(v)
+    if(!ids) return new Error(`No Ids file found for v${v}!`)
+    for (let i = 0; i < 12; i++) {
+      for (let j = 0; j < 12; j++) {
+        if (island.block[i][j]) {
+          let name
+          let other = island.block[i][j].split("|")
+          if (v >= 6.2) {
+            name = other[1];
+            while (!other[0])
+            other.shift()
+          }
+          //else name = island.block[i][j].split("|")[0];
+          if(!name) return
+          island.block[i][j] = `${ids[`${name}`]}|${other.join('|')}`
+        }
+        if (island.attachment[i][j]) {
+          let name
+          let other = island.attachment[i][j].split("|")
+          if (v >= 6.2) {
+            name = other[1];
+            while (!other[0])
+            other.shift()
+          }
+          //else name = island.attachment[i][j].split("|")[0];
+          if(!name) return
+          island.attachment[i][j] = `${ids[`${name}`]}|${other.join('|')}`
+        }
+      }
+    }
+    return island
+  }
   }

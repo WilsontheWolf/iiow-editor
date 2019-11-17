@@ -36,13 +36,14 @@ module.exports = () =>{
   
   function convert62(save) {
   console.log('6.2')
-  let iisland = save.player.data.split(' ')
+  let island = save.player.data.split(' ')
   let extra = []
   for (i = 0; i < 8; i++) {
-      extra.push(iisland.shift())
+      extra.push(island.shift())
     }
     extra.push("0")
-    let island = client.parse_island(iisland, null, true)
+    island = client.parse_island(island, null, true)
+    island = client.parse_islandId(island, parseFloat(save.exists.version))
     island.extra = extra
     let resources = []
   save.resources.resources.split(" ").forEach(r => {
