@@ -1,8 +1,9 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-module.exports = (file, fileLocation =`${require('electron').remote.getGlobal('loaded').path}\\${require('electron').remote.getGlobal('loaded').file}`) =>{
+module.exports = () =>{
   client = {}
+  let fileLocation =`${require('electron').remote.getGlobal('loaded').path}\\${require('electron').remote.getGlobal('loaded').file}`
   require('./functions')(client)
   let save = client.readLocalFile(fileLocation)
   let version = parseFloat(save.exists.version)
@@ -28,7 +29,8 @@ module.exports = (file, fileLocation =`${require('electron').remote.getGlobal('l
     island:island,
     resources:resources,
     inventory:inventory,
-    realm:realm
+    realm:realm,
+    version:parseFloat(save.exists.version)
   }
   }
   
@@ -52,7 +54,8 @@ module.exports = (file, fileLocation =`${require('electron').remote.getGlobal('l
     island:island,
     resources:resources,
     inventory:inventory,
-    realm:realm
+    realm:realm,
+    version:parseFloat(save.exists.version)
   }
   }
   
