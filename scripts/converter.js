@@ -5,16 +5,25 @@ module.exports = (file, fileLocation =`${require('electron').remote.getGlobal('l
 client = {}
 require('./functions')(client)
 let save = client.readLocalFile(fileLocation)
-console.log(save,file,fileLocation)
 let version = parseFloat(save.exists.version)
+console.log(save,file,fileLocation,version)
 if(!version) return new Error('Error reading version!')
 convertSave(save, version)
 }
 function convertSave(save, version) {
-  if(version <= 5) return convert5(save)
-  
+  if(version <= 6.1) return convert5(save)
+  if(version >= 6.2 && version < 6.4) convert62(save)
+  if(version >= 6.4) convert64(save)
 }
 
 function convert5(save) {
+console.log('5')
+}
 
+function convert62(save) {
+console.log('6.2')
+}
+
+function convert64(save) {
+console.log('6.4')
 }
