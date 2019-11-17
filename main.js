@@ -1,5 +1,5 @@
 const { app, BrowserWindow } = require('electron');
-const isDevelopment = global.isDevelopment = false
+const isDevelopment = global.isDevelopment = !!process.env.npm_lifecycle_script
 const path = require('path');
 __dirname =path.resolve(__dirname).toString()
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.

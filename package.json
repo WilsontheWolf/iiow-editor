@@ -5,7 +5,8 @@
   "description": "A IIslands of war save file manager.",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "epi"
   },
   "author":{ 
     "name": "WilsontheWolf",
