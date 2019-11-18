@@ -135,10 +135,11 @@ module.exports = (client) => {
             name = other[1];
             while (!other[0])
             other.shift()
+            other.shift()
           }
           //else name = island.block[i][j].split("|")[0];
           if(!name) return
-          island.block[i][j] = `${ids[`${name}`]}|${other.join('|')}`
+          island.block[i][j] = `${ids.items[`${name}`]}|${other.join('|')}`
         }
         if (island.attachment[i][j]) {
           let name
@@ -147,10 +148,11 @@ module.exports = (client) => {
             name = other[1];
             while (!other[0])
             other.shift()
+            other.shift()
           }
           //else name = island.attachment[i][j].split("|")[0];
           if(!name) return
-          island.attachment[i][j] = `${ids[`${name}`]}|${other.join('|')}`
+          island.attachment[i][j] = `${ids.items[`${name}`]}|${other.join('|')}`
         }
       }
     }
