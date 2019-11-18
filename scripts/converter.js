@@ -49,6 +49,7 @@ module.exports = () =>{
   })
   let realm = {v: parseFloat(save.exists.version), data: save.realm, realm:1}
   let inventory = save.inventory
+  inventory.inventory = client.parse_inv(inventory.inventory, parseFloat(save.exists.version))
   return {
     island:island,
     resources:resources,
