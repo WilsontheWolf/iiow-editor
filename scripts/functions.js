@@ -140,14 +140,10 @@ module.exports = (client) => {
           //else name = island.block[i][j].split("|")[0];
           if(!name) return
           if(other.length > 6) other.forEach((i,index) =>{
-            console.log(i,index)
             if(index < 5 || !i) return
-            console.log('succ')
             i = i.split(':')
-            console.log(i)
             i[0] = ids.properties[`${i[0]}`].toLowerCase()
             other[index] = i.join(':')
-            console.log(other[index])
           })
           island.block[i][j] = `${ids.items[`${name}`]}|${other.join('|')}`
         }
