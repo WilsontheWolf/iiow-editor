@@ -3,7 +3,7 @@
 // All of the Node.js APIs are available in this process.
 module.exports = () =>{
   client = {}
-  let fileLocation =`${require('electron').remote.getGlobal('loaded').path}\\${require('electron').remote.getGlobal('loaded').file}`
+  let fileLocation =`${quire('electron').remote.getGlobal('loaded').path}\\${require('electron').remote.getGlobal('loaded').file}\\${require('electron').remote.getGlobal('loaded').file}`
   require('./functions')(client)
   let save = client.readLocalFile(fileLocation)
   let version = parseFloat(save.exists.version)

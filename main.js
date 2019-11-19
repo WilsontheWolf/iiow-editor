@@ -1,15 +1,39 @@
 const { app, BrowserWindow } = require('electron');
 const isDevelopment = global.isDevelopment = !!process.env.npm_lifecycle_script
 const path = require('path');
+const https = require('https');
 __dirname =path.resolve(__dirname).toString()
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-
+let version = require('./package.json').version
 global.loaded = {file: null,
   path:process.env.LOCALAPPDATA+'\\IIslandsOfWar'}
+
+  global.version = {current: version,
+    newest:null}
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+https.get('https://raw.githubusercontent.com/WilsontheWolf/iiow-editor-api/master/latest.json', (resp) => {
+  let data = '';
+
+  // A chunk of data has been recieved.
+  resp.on('data', (chunk) => {
+    data += chunk;
+  });
+
+  // The whole response has been received. Print out the result.
+  resp.on('end', () => {
+    let final = JSON.parse(data)
+    console.log(final);
+    if (final) global.version.newest = final
+    else global.version.newest = 'unknown'
+  });
+
+}).on("error", (err) => {
+  global.version.newest = 'unknown'
+  console.log("Error: " + err.message);
+});
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
