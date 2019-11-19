@@ -22,8 +22,28 @@ module.exports = (client) => {
   return [current, legacy]}
 
   client.readLocalFile = (file = `./readyiisland.ini`) => {
+    let path = file.split('\\')
+    let dirPath = []
+    let File
+    path.forEach((p, index) => {if(index+1 !== path.length) dirPath.push(p)
+    else File = p})
+    console.log(file,path,dirPath,File)
+    if(fs.existsSync(file) && fs.lstatSync(dirPath.join('\\')).isDirectory(File)) client.readLocalFiles(file)
     let result= fs.readFileSync(file, 'utf-8')
     return client.readFile(result)
+  }
+
+  client.readLocalFiles = (file = `./readyiisland.ini`) => {
+    let path = file.split('\\')
+    let dirPath = []
+    let File
+    path.forEach((p, index) => {if(index+1 !== path.length) dirPath.push(p)
+    else File = p})
+    console.log(file,path,dirPath,File)
+    if(fs.existsSync(file) && !fs.lstatSync(dirPath.join('\\')).isDirectory(File)) client.readLocalFile(file)
+    //let result= fs.readFileSync(file, 'utf-8')
+    //return client.readFile(result)
+    return console.log('dir')
   }
 
   client.readFile = (file) => {
@@ -114,7 +134,6 @@ module.exports = (client) => {
     let ids = client.getIds(v)
     if(!ids) return new Error(`No Ids file found for v${v}!`)
     inv = inv.split(' ')
-    // it freezes the page idk why pls help
     inv.forEach((i, index) => {
       if(index+1 ==inv.length) return //stops the freezing idk y
       if(index % 2) return //is odd aka the number count
