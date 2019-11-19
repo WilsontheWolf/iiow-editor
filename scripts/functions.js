@@ -115,9 +115,9 @@ module.exports = (client) => {
     if(!ids) return new Error(`No Ids file found for v${v}!`)
     inv = inv.split(' ')
     // it freezes the page idk why pls help
-    /*inv.forEach((i, index) => {
-      console.log(`${index+1}/${inv.length}`)
-      if(index % 2) return//is odd aka the number count
+    inv.forEach((i, index) => {
+      if(index+1 ==inv.length) return //stops the freezing idk y
+      if(index % 2) return //is odd aka the number count
       let name
           let other = i.split("|")
           if (v >= 6.2) {
@@ -135,7 +135,8 @@ module.exports = (client) => {
             other[index] = i.join(':')
           })
           inv[index] = `${ids.items[`${name}`]}|${other.join('|')}`
-    });*/
+          return
+    });
     return inv.join(' ')
   }
   
