@@ -4,6 +4,7 @@
   "version": "0.0.2",
   "description": "A IIslands of war save file manager.",
   "main": "main.js",
+  "licence": "MIT"
   "scripts": {
     "start": "electron .",
     "build": "epi"
