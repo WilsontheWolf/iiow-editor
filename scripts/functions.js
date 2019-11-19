@@ -27,7 +27,6 @@ module.exports = (client) => {
     let File
     path.forEach((p, index) => {if(index+1 !== path.length) dirPath.push(p)
     else File = p})
-    console.log(file,path,dirPath,File)
     if(fs.existsSync(file) && fs.lstatSync(dirPath.join('\\')).isDirectory(File)) client.readLocalFiles(file)
     let result= fs.readFileSync(file, 'utf-8')
     return client.readFile(result)
@@ -39,11 +38,9 @@ module.exports = (client) => {
     let File
     path.forEach((p, index) => {if(index+1 !== path.length) dirPath.push(p)
     else File = p})
-    console.log(file,path,dirPath,File)
-    if(fs.existsSync(file) && !fs.lstatSync(dirPath.join('\\')).isDirectory(File)) client.readLocalFile(file)
+    if(fs.existsSync(file) && !fs.lstatSync(dirPath.join('\\')).isDirectory(File)) return //console.log('dir')
     //let result= fs.readFileSync(file, 'utf-8')
     //return client.readFile(result)
-    return console.log('dir')
   }
 
   client.readFile = (file) => {
