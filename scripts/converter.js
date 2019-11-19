@@ -12,8 +12,7 @@ module.exports = () =>{
   }
   function convertSave(save, version) {
     if(version <= 6.1) return convert5(save)
-    if(version >= 6.2 && version < 6.4) return convert62(save)
-    if(version >= 6.4) return convert64(save)
+    if(version >= 6.2) return convert62(save)
   }
   
   function convert5(save) {
@@ -36,10 +35,12 @@ module.exports = () =>{
   function convert62(save) {
   let island = save.player.data.split(' ')
   let extra = []
-  for (i = 0; i < 8; i++) {
+  let max = 8
+  if(parseFloat(save.exists.version) >= 6.4) max = 9
+  for (i = 0; i < 9; i++) {
       extra.push(island.shift())
     }
-    extra.push("0")
+    if(parseFloat(save.exists.version) < 6.4)extra.push("0")
     island = client.parse_island(island, null, true)
     island = client.parse_islandId(island, parseFloat(save.exists.version))
     island.extra = extra
@@ -57,15 +58,4 @@ module.exports = () =>{
     realm:realm,
     version:parseFloat(save.exists.version)
   }
-  }
-  
-  function convert64(save) {
-    let iisland = save.player.data.split(' ')
-    let extra = []
-    for (i = 0; i < 9; i++) {
-      extra.push(iisland.shift())
-    }
-    let island = client.parse_island(iisland, null, true)
-    island.extra = extra
-
   }

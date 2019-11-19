@@ -22,16 +22,30 @@ module.exports = (client) => {
   return [current, legacy]}
 
   client.readLocalFile = (file = `./readyiisland.ini`) => {
-    if(fs.existsSync(file) && fs.lstatSync(file).isDirectory()) return client.readLocalFiles(file)
-    let result= fs.readFileSync(file, 'utf-8')
-    return client.readFile(result)
+    let result
+    if(fs.existsSync(file) && fs.lstatSync(file).isDirectory()) result = client.readLocalFiles(file)
+    else result= client.readFile(fs.readFileSync(file, 'utf-8'))
+    return result
   }
 
   client.readLocalFiles = (file = `./readyiisland.ini`) => {
     if(fs.existsSync(file) && !fs.lstatSync(file).isDirectory()) return 
-    else console.log('dir')
-    //let result= fs.readFileSync(file, 'utf-8')
-    //return client.readFile(result)
+    let results = fs.readdirSync(file)
+    files = []
+    results.forEach(f => {
+      let n = file+'\\'+f
+      if(fs.lstatSync(n).isDirectory()) return
+      let c = fs.readFileSync(n, 'utf-8')
+      if(!c) return
+      let s = client.readFile(c)
+      if (!s) return
+      files.push(s)
+    })
+    let save = {}
+    files.forEach(f => {
+      save = {...save, ...f}
+    })
+    return save
   }
 
   client.readFile = (file) => {
