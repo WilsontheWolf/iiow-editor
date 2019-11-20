@@ -5,6 +5,8 @@ const https = require('https');
 __dirname =path.resolve(__dirname).toString()
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 let version = require('./package.json').version
+console.log(process.argv)
+global.test = process.argv
 global.loaded = {file: null,
   path:process.env.LOCALAPPDATA+'\\IIslandsOfWar'}
 
