@@ -37,7 +37,7 @@ module.exports = () =>{
   let extra = []
   let max = 8
   if(parseFloat(save.exists.version) >= 6.4) max = 9
-  for (i = 0; i < 9; i++) {
+  for (i = 0; i < max; i++) {
       extra.push(island.shift())
     }
     if(parseFloat(save.exists.version) < 6.4)extra.push("0")
