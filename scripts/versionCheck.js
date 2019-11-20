@@ -23,7 +23,7 @@ function outDated(newest, desc){
 body.innerHTML = body.innerHTML + `
 <div id="outdated">
     <span style="vertical-align: bottem;"></span>
-    Version ${newest} has been released! Download it now.<br>
+    Version ${newest} has been released! Download it <a href="javascript:require('electron').shell.openExternal('https://github.com/WilsontheWolf/iiow-editor/releases')">here</a>.<br>
     ${desc}
 </div>
 `

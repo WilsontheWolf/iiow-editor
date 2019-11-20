@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Editor</title>
+    <script src="./scripts/top-bar.js"></script>
+  </head>
+  <body>
+    <canvas id="editor" width="500" height="500" style="border:1px solid #c3c3c3;"></canvas>
+    <script>
+      var canvas = document.getElementById("editor");
+      var ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#FF0000";
+      ctx.fillRect(0, 0, 150, 75);
+      </script>
+  </body>
+</html>
