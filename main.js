@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain  } = require('electron');
 const isDevelopment = global.isDevelopment = !!process.env.npm_lifecycle_script
 const path = require('path');
 const https = require('https');
@@ -92,3 +92,15 @@ app.on('browser-window-created',function(e,window) {
 });
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+
+ipcMain.on('eval', async (event, command) => {
+  if(!isDevelopment) return event.reply('eval', 'Eval is disabled while not in dev mode.')
+  console.log(command) // prints "ping"
+  let responce 
+  try{
+    responce = await eval(command)
+  } catch (e){
+    responce = e.toString()
+  }
+  event.reply('eval', responce)
+})

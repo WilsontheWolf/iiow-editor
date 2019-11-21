@@ -11,35 +11,23 @@
   
     <p id="total"><script>
       // You can also require other files to run in this process
-      
+      const { ipcRenderer } = require('electron')
+ipcRenderer.on('eval', (event, arg) => {
+  console.log(arg) // prints "pong"
+  let responce = arg
+  if (typeof evaled !== "string") {
+      responce = require("util").inspect(responce, {"depth": 10});
+    }
+    document.getElementById('output').innerHTML = responce
+})
 function execute (){
-    ( async () => {
-    let code=document.getElementById('box').value
-    let evaled
-    try{ evaled = await eval(code);
-        console.log(evaled)
-    if (typeof evaled !== "string") {
-      evaled = require("util").inspect(evaled, {"depth": 10});
-    }}catch(err) {
-    if (typeof err !== "string") {
-      evaled = require("util").inspect(err);
-    }}
-    document.getElementById('output').innerHTML = evaled
-})()}
+      ipcRenderer.send('eval', document.getElementById('box').value)
+    }
 function executeAsync (){
-    ( async () => {
-    let code=document.getElementById('box').value
-    let evaled
-    try{ evaled = await eval("( async () => {return " + code + "})()");
-        console.log(evaled)
-    if (typeof evaled !== "string") {
-      evaled = require("util").inspect(evaled, {"depth": 10});
-    }}catch(err) {
-    if (typeof err !== "string") {
-      evaled = require("util").inspect(err);
-    }}
-    document.getElementById('output').innerHTML = evaled
-})()
+  let code = document.getElementById('box').value
+  if(code.includes('\n')) code = "( async () => {" + code + "})"
+  else code = "( async () => {return " + code + "})"
+  ipcRenderer.send('eval', code)
 }
     </script>
     <noscript>oof. Please enable scripts</noscript></p>
