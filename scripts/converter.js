@@ -6,6 +6,8 @@ module.exports = () =>{
   let fileLocation =require('electron').remote.getGlobal('loaded').file
   require('./functions')(client)
   let save = client.readLocalFile(fileLocation)
+  console.log(save)
+  if(!save.exists || !save.exists.version) return
   let version = parseFloat(save.exists.version)
   if(!version) return new Error('Error reading version!')
   return convertSave(save, version)
