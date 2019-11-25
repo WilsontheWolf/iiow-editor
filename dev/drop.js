@@ -22,7 +22,7 @@ document.body.onload =function () {
               dropzone.style.visibility = "hidden";
               dropzone.style.opacity = 0;
               for (let f of e.dataTransfer.files) {
-                  console.log('File(s) you dragged here: ', f)
+                  console.log(f)
               }
               
               return false;
@@ -31,7 +31,6 @@ document.body.onload =function () {
       var lastTarget = null
       window.addEventListener("dragenter", function(e)
 {
-  console.log(lastTarget,'\n', e.target)
     lastTarget = e.target; // cache the last target here
     // unhide our dropzone overlay
     dropzone.style.visibility = "";
@@ -40,7 +39,6 @@ document.body.onload =function () {
 
 window.addEventListener("dragleave", function(e)
 {
-  console.log(lastTarget, e.target)
     // this is the magic part. when leaving the window,
     // e.target happens to be exactly what we want: what we cached
     // at the start, the dropzone we dragged into.
