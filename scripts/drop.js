@@ -21,10 +21,9 @@ document.body.onload =function () {
               e.preventDefault();
               dropzone.style.visibility = "hidden";
               dropzone.style.opacity = 0;
-              for (let f of e.dataTransfer.files) {
-                  console.log(f)
-              }
-              
+              if(!e.dataTransfer.files[0]) return
+              require('electron').remote.getGlobal('loaded').file = e.dataTransfer.files[0].path
+              window.location.href = "./file.html";
               return false;
           };
       

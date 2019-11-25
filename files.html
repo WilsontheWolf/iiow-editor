@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Your Saves</title>
     <script src="./scripts/top-bar.js"></script>
+    <script src="./scripts/drop.js"></script>
   </head>
   <body>
     <h1>Your Saves</h1>
@@ -27,7 +28,7 @@ for (i = 0; i < files[0].length; i++) {
 }})()
 function getStats(){
  
-  require('electron').remote.getGlobal('loaded').file = files[0][options.selectedIndex-1]
+  require('electron').remote.getGlobal('loaded').file = `${require('electron').remote.getGlobal('loaded').path}\\${files[0][options.selectedIndex-1]}`
   window.location.href = "./file.html";
 }
     </script>
