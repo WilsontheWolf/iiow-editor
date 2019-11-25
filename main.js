@@ -16,6 +16,27 @@ global.loaded = {file: null,
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
+const gotTheLock = app.requestSingleInstanceLock()
+
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    console.log(commandLine[commandLine.length-1])
+    if (!mainWindow) return
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+      let file = commandLine[commandLine.length-1]
+      if(file == '.') return console.log('boi')
+      mainWindow.loadURL(`file://${__dirname}/file.html`);
+      console.log('yeee')
+  })
+
+  // Create myWindow, load the rest of the app, etc...
+
+
+
 https.get('https://raw.githubusercontent.com/WilsontheWolf/iiow-editor-api/master/latest.json', (resp) => {
   let data = '';
 
@@ -103,4 +124,4 @@ ipcMain.on('eval', async (event, command) => {
     responce = e.toString()
   }
   event.reply('eval', responce)
-})
+})}
