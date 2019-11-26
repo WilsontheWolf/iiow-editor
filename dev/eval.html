@@ -1,42 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Dev Eval</title>
-    <script src="./top-bar.js"></script>
-  </head>
-  <body>
-    <h1>Dev Eval</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-  
-    <p id="total"><script>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dev Eval</title>
+  <script src="./top-bar.js"></script>
+</head>
+
+<body>
+  <h1>Dev Eval</h1>
+  <!-- All of the Node.js APIs are available in this renderer process. -->
+
+  <p id="total">
+    <script>
       // You can also require other files to run in this process
       const { ipcRenderer } = require('electron')
-ipcRenderer.on('eval', (event, arg) => {
-  console.log(arg) // prints "pong"
-  let responce = arg
-  if (typeof evaled !== "string") {
-      responce = require("util").inspect(responce, {"depth": 10});
-    }
-    document.getElementById('output').innerHTML = responce
-})
-function execute (){
-      ipcRenderer.send('eval', document.getElementById('box').value)
-    }
-function executeAsync (){
-  let code = document.getElementById('box').value
-  if(code.includes('\n')) code = "( async () => {" + code + "})"
-  else code = "( async () => {return " + code + "})"
-  ipcRenderer.send('eval', code)
-}
+      ipcRenderer.on('eval', (event, arg) => {
+        console.log(arg) // prints "pong"
+        let responce = arg
+        if (typeof evaled !== "string") {
+          responce = require("util").inspect(responce, { "depth": 10 });
+        }
+        document.getElementById('output').innerHTML = responce
+      })
+      function execute() {
+        ipcRenderer.send('eval', document.getElementById('box').value)
+      }
+      function executeAsync() {
+        let code = document.getElementById('box').value
+        if (code.includes('\n')) code = "( async () => {" + code + "})"
+        else code = "( async () => {return " + code + "})"
+        ipcRenderer.send('eval', code)
+      }
     </script>
     <noscript>oof. Please enable scripts</noscript></p>
-    <p><textarea id="box" rows="10" cols="30"></textarea><br>
+  <p><textarea id="box" rows="10" cols="30"></textarea><br>
     <button type="button" onclick="execute()">Eval!</button>
     <button type="button" onclick="executeAsync()">Async Eval!</button>
     <br>Output:</p>
-    <p id=output ></p>
-    <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=../assets/home.png width=30 ><br>< back home</button></p>
-
-  </body>
-</html>
+  <p id=output></p>
+  <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=../assets/home.png
+        width=30><br>
+      < back home</button> </p> </body> </html>

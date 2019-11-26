@@ -1,41 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Your Saves</title>
-    <script src="./scripts/top-bar.js"></script>
-    <script src="./scripts/drop.js"></script>
-  </head>
-  <body>
-    <h1>Your Saves</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-  
-    <p id="total"><script async>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Your Saves</title>
+  <script src="./scripts/top-bar.js"></script>
+  <script src="./scripts/drop.js"></script>
+</head>
+
+<body>
+  <h1>Your Saves</h1>
+  <!-- All of the Node.js APIs are available in this renderer process. -->
+
+  <p id="total">
+    <script async>
       // You can also require other files to run in this process
       (async () => {
-      let functions = {}
-      require('./scripts/functions.js')(functions)
-      files = await functions.finder()
-      console.log(files)
-      document.getElementById("total").innerHTML=`${files[0].length/*+files[1].length*/} files found.`;
-      
-      var options = document.getElementById("options")
-for (i = 0; i < files[0].length; i++) {
-    let opt = document.createElement("option");
-    opt.value = files[0][i];
-    opt.text = files[0][i];
-    options.add(opt, null);
-}})()
-function getStats(){
- 
-  require('electron').remote.getGlobal('loaded').file = `${require('electron').remote.getGlobal('loaded').path}\\${files[0][options.selectedIndex-1]}`
-  window.location.href = "./file.html";
-}
+        let functions = {}
+        require('./scripts/functions.js')(functions)
+        files = await functions.finder()
+        console.log(files)
+        document.getElementById("total").innerHTML = `${files[0].length/*+files[1].length*/} files found.`;
+
+        var options = document.getElementById("options")
+        for (i = 0; i < files[0].length; i++) {
+          let opt = document.createElement("option");
+          opt.value = files[0][i];
+          opt.text = files[0][i];
+          options.add(opt, null);
+        }
+      })()
+      function getStats() {
+
+        require('electron').remote.getGlobal('loaded').file = `${require('electron').remote.getGlobal('loaded').path}\\${files[0][options.selectedIndex - 1]}`
+        window.location.href = "./file.html";
+      }
     </script>
     <noscript>oof. Please enable scripts</noscript></p>
-    <select id='options' onchange="if (this.selectedIndex) getStats();">
-      <option disabled selected value='none'>Choose One</option>
-    </select>
-    <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30 ><br>< back home</button></p>
-  </body>
-</html>
+  <select id='options' onchange="if (this.selectedIndex) getStats();">
+    <option disabled selected value='none'>Choose One</option>
+  </select>
+  <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>
+      < back home</button> </p> </body> </html>

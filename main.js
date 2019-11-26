@@ -1,16 +1,20 @@
-const { app, BrowserWindow, ipcMain  } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const isDevelopment = global.isDevelopment = !!process.env.npm_lifecycle_script
 const path = require('path');
 const https = require('https');
-__dirname =path.resolve(__dirname).toString()
+__dirname = path.resolve(__dirname).toString()
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 let version = require('./package.json').version
-global.loaded = {file: null,
-  path: process.env.LOCALAPPDATA+'\\IIslandsOfWar',
-data: process.env.LOCALAPPDATA+'\\iiow-editor\\data'}
+global.loaded = {
+  file: null,
+  path: process.env.LOCALAPPDATA + '\\IIslandsOfWar',
+  data: process.env.LOCALAPPDATA + '\\iiow-editor\\data'
+}
 
-  global.version = {current: version,
-    newest:null}
+global.version = {
+  current: version,
+  newest: null
+}
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -24,100 +28,101 @@ if (!gotTheLock) {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
     if (!mainWindow) return
-      if (mainWindow.isMinimized()) mainWindow.restore()
-      mainWindow.focus()
-      let file = commandLine[commandLine.length-1]
-      if(file == '.') return
-      mainWindow.loadURL(`file://${__dirname}/file.html`);
+    if (mainWindow.isMinimized()) mainWindow.restore()
+    mainWindow.focus()
+    let file = commandLine[commandLine.length - 1]
+    if (file == '.') return
+    mainWindow.loadURL(`file://${__dirname}/file.html`);
   })
 
   // Create myWindow, load the rest of the app, etc...
 
 
 
-https.get('https://raw.githubusercontent.com/WilsontheWolf/iiow-editor-api/master/latest.json', (resp) => {
-  let data = '';
+  https.get('https://raw.githubusercontent.com/WilsontheWolf/iiow-editor-api/master/latest.json', (resp) => {
+    let data = '';
 
-  // A chunk of data has been recieved.
-  resp.on('data', (chunk) => {
-    data += chunk;
+    // A chunk of data has been recieved.
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
+
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      let final = JSON.parse(data)
+      if (final) global.version.newest = final
+      else global.version.newest = 'unknown'
+    });
+
+  }).on("error", (err) => {
+    global.version.newest = 'unknown'
+    console.log("Error: " + err.message);
+  });
+  const createWindow = () => {
+    // Create the browser window.
+    mainWindow = new BrowserWindow({
+      icon: '.assets/icon.png',
+      width: 800,
+      height: 600,
+      frame: false,
+      webPreferences: {
+        nodeIntegration: true
+      },
+      backgroundColor: '#36393f'
+    })
+
+    require('./scripts/first.js')
+    // and load the index.html of the app
+    mainWindow.loadURL(`file://${__dirname}/index.html`);
+
+    // Open the DevTools.
+    if (isDevelopment) mainWindow.webContents.openDevTools();
+
+    // Emitted when the window is closed.
+    mainWindow.on('closed', () => {
+      // Dereference the window object, usually you would store windows
+      // in an array if your app supports multi windows, this is the time
+      // when you should delete the corresponding element.
+      mainWindow = null;
+    });
+  };
+
+  // This method will be called when Electron has finished
+  // initialization and is ready to create browser windows.
+  // Some APIs can only be used after this event occurs.
+  app.on('ready', createWindow);
+
+  // Quit when all windows are closed.
+  app.on('window-all-closed', () => {
+    // On OS X it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
   });
 
-  // The whole response has been received. Print out the result.
-  resp.on('end', () => {
-    let final = JSON.parse(data)
-    if (final) global.version.newest = final
-    else global.version.newest = 'unknown'
+  app.on('activate', () => {
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (mainWindow === null) {
+      createWindow();
+    }
   });
 
-}).on("error", (err) => {
-  global.version.newest = 'unknown'
-  console.log("Error: " + err.message);
-});
-const createWindow = () => {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    icon:'.assets/icon.png',
-    width: 800,
-    height: 600,
-    frame: false,
-    webPreferences: {
-      nodeIntegration: true
-    },
-    backgroundColor: '#36393f'
+  app.on('browser-window-created', function (e, window) {
+    window.setMenu(null);
+  });
+  // In this file you can include the rest of your app's specific main process
+  // code. You can also put them in separate files and import them here.
+
+  ipcMain.on('eval', async (event, command) => {
+    if (!isDevelopment) return event.reply('eval', 'Eval is disabled while not in dev mode.')
+    let responce
+    try {
+      responce = await eval(command)
+    } catch (e) {
+      responce = e.toString()
+    }
+    event.reply('eval', responce)
   })
-
-  require('./scripts/first.js')
-  // and load the index.html of the app
-  mainWindow.loadURL(`file://${__dirname}/index.html`);
-
-  // Open the DevTools.
- if(isDevelopment) mainWindow.webContents.openDevTools();
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null;
-  });
-};
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
-
-// Quit when all windows are closed.
-app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
-app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
-
-app.on('browser-window-created',function(e,window) {
-  window.setMenu(null);
-});
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
-
-ipcMain.on('eval', async (event, command) => {
-  if(!isDevelopment) return event.reply('eval', 'Eval is disabled while not in dev mode.')
-  let responce 
-  try{
-    responce = await eval(command)
-  } catch (e){
-    responce = e.toString()
-  }
-  event.reply('eval', responce)
-})}
+}

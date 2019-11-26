@@ -4,73 +4,83 @@
             background-color: #36393f;
             color: white;
         }
-        
-                #title-bar {
-                -webkit-app-region: drag;
-                height: 20px;
-                text-align: center;
-                line-height: 20px;
-                vertical-align: middle;
-                background-color: #202124;
-                padding: none;
-                margin: 0px;
-                position: fixed;
-                left: 0px;
-                top: 0px;
-                width: 100%;
-            }
 
-            #title {
-                position: fixed;
-                top: 0px;
-                left: 20px;
-                color:white;
+        #title-bar {
+            -webkit-app-region: drag;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            vertical-align: middle;
+            background-color: #202124;
+            padding: none;
+            margin: 0px;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+        }
 
-            }
+        #title {
+            position: fixed;
+            top: 0px;
+            left: 20px;
+            color: white;
 
-            button {
-                color: white;
-                background-color: transparent;
-                border-color: transparent;
-            }
+        }
 
-            button:hover { filter: brightness(85%); }
+        button {
+            color: white;
+            background-color: transparent;
+            border-color: transparent;
+        }
 
-            button.nohover:hover { filter: brightness(100%); }
-            
-            button.title-bar-btns {
-                top: 0px;
-                position: fixed;
-                width: 20px;
-                height: 20px;
-                color: white;
-                background-color: #202124;
-                border-color: transparent;
-                -webkit-app-region: no-drag;
-            }
-            textarea {
-                color: white;
-                background-color: #36393f;
-                border-color: #202124;
-            }
-            select {
-                color: white;
-                background-color: #36393f;
-                border-color: #202124; 
-            }
-            select:disabled {
-                color: white;
-                background-color: #202124;
-                border-color: #202124;
-            }
+        button:hover {
+            filter: brightness(85%);
+        }
 
-            div#dropzone {
-                position: fixed; top: 0; left: 0; 
-            z-index: 9999999999;               
+        button.nohover:hover {
+            filter: brightness(100%);
+        }
+
+        button.title-bar-btns {
+            top: 0px;
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            color: white;
+            background-color: #202124;
+            border-color: transparent;
+            -webkit-app-region: no-drag;
+        }
+
+        textarea {
+            color: white;
+            background-color: #36393f;
+            border-color: #202124;
+        }
+
+        select {
+            color: white;
+            background-color: #36393f;
+            border-color: #202124;
+        }
+
+        select:disabled {
+            color: white;
+            background-color: #202124;
+            border-color: #202124;
+        }
+
+        div#dropzone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999999999;
             /* takes up 100% of page */
-            width: 100%; height: 100%;         
+            width: 100%;
+            height: 100%;
             /* dim the page with 50% black background when visible */
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0, 0, 0, 0.5);
             /* a nice fade effect, visibility toggles after 175ms, opacity will animate for 175ms. note display:none cannot be animated.  */
             transition: visibility 175ms, opacity 175ms;
-              }
+        }

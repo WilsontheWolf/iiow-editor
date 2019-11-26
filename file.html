@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Save</title>
-    <script src="./scripts/top-bar.js"></script>
-    <script src="./scripts/drop.js"></script>
-  </head>
-  <body>
-    <h1>Save</h1>
-   
-    <p><script>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Save</title>
+  <script src="./scripts/top-bar.js"></script>
+  <script src="./scripts/drop.js"></script>
+</head>
+
+<body>
+  <h1>Save</h1>
+
+  <p>
+    <script>
       // You can also require other files to run in this process
       const file = require('./scripts/converter.js')()
-      if(file)document.write(`Save Version: v${file.version}
+      if (file) document.write(`Save Version: v${file.version}
       <p><button id="settings" class="nohover" ><img src=./assets/core.png width=30 ><br>${file.resources[2]}/${file.resources[1]} Lives</button><lb>
         <button id="settings" class="nohover" ><img src=./assets/money.png width=30 ><br>${file.resources[0]}</button></p>`)
       else document.write(`<p>Error reading save!<p>`)
     </script>
     <noscript>oof. Please enable scripts</noscript></p>
-    <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30 ><br>< back home</button></p>
-  </body>
-</html>
+  <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>
+      < back home</button> </p> </body> </html>

@@ -9,7 +9,7 @@
     "start": "electron .",
     "build": "epi"
   },
-  "author":{ 
+  "author": {
     "name": "WilsontheWolf",
     "url": "https://wilsonthewolf.glitch.me"
   },
