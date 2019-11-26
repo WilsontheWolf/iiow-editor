@@ -5,10 +5,9 @@ const https = require('https');
 __dirname =path.resolve(__dirname).toString()
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 let version = require('./package.json').version
-console.log(process.argv)
-global.test = process.argv
 global.loaded = {file: null,
-  path:process.env.LOCALAPPDATA+'\\IIslandsOfWar'}
+  path: process.env.LOCALAPPDATA+'\\IIslandsOfWar',
+data: process.env.LOCALAPPDATA+'\\iiow-editor\\data'}
 
   global.version = {current: version,
     newest:null}
@@ -19,18 +18,17 @@ let mainWindow;
 const gotTheLock = app.requestSingleInstanceLock()
 
 if (!gotTheLock) {
+  console.warn('There is already a session running! Exiting...')
   app.quit()
 } else {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
-    console.log(commandLine[commandLine.length-1])
     if (!mainWindow) return
       if (mainWindow.isMinimized()) mainWindow.restore()
       mainWindow.focus()
       let file = commandLine[commandLine.length-1]
-      if(file == '.') return console.log('boi')
+      if(file == '.') return
       mainWindow.loadURL(`file://${__dirname}/file.html`);
-      console.log('yeee')
   })
 
   // Create myWindow, load the rest of the app, etc...
@@ -48,7 +46,6 @@ https.get('https://raw.githubusercontent.com/WilsontheWolf/iiow-editor-api/maste
   // The whole response has been received. Print out the result.
   resp.on('end', () => {
     let final = JSON.parse(data)
-    console.log(final);
     if (final) global.version.newest = final
     else global.version.newest = 'unknown'
   });
@@ -116,7 +113,6 @@ app.on('browser-window-created',function(e,window) {
 
 ipcMain.on('eval', async (event, command) => {
   if(!isDevelopment) return event.reply('eval', 'Eval is disabled while not in dev mode.')
-  console.log(command) // prints "ping"
   let responce 
   try{
     responce = await eval(command)
