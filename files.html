@@ -19,7 +19,6 @@
         let functions = {}
         require('./scripts/functions.js')(functions)
         files = await functions.finder()
-        console.log(files)
         document.getElementById("total").innerHTML = `${files[0].length/*+files[1].length*/} files found.`;
 
         var options = document.getElementById("options")

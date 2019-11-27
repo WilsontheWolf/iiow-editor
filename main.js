@@ -39,7 +39,7 @@ let mainWindow;
 const gotTheLock = app.requestSingleInstanceLock()
 
 if (!gotTheLock) {
-  console.warn('There is already a session running! Exiting...')
+  console.error('There is already a session running! Exiting...')
   app.quit()
 } else {
   app.on('second-instance', (event, commandLine, workingDirectory) => {
@@ -73,7 +73,7 @@ if (!gotTheLock) {
 
   }).on("error", (err) => {
     global.version.newest = 'unknown'
-    console.log("Error: " + err.message);
+    console.error("Error: " + err.message);
   });
   const createWindow = () => {
     // Create the browser window.

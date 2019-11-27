@@ -8,6 +8,5 @@ module.exports = () => {
     file.resources = file.file.resources.resources.split(' ')
     file.version = parseFloat(file.file.exists.version)
     file.island = file.file.island.island
-    console.log(file.file)
 
 }

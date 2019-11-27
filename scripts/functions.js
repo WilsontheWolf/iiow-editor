@@ -18,7 +18,6 @@ module.exports = (client) => {
       if (f.startsWith("save_")) current.push(f)
       else legacy.push(f)
     });
-    console.log(`Found ${current.length} current save files and ${legacy.length} legacy files for a total of ${current.length + legacy.length} files.`)
     return [current, legacy]
   }
 
