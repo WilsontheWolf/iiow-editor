@@ -28,8 +28,8 @@
       }
       function executeAsync() {
         let code = document.getElementById('box').value
-        if (code.includes('\n')) code = "( async () => {" + code + "})"
-        else code = "( async () => {return " + code + "})"
+        if (code.includes('\n')) code = "( async () => {" + code + "})()"
+        else code = "( async () => {return " + code + "})()"
         ipcRenderer.send('eval', code)
       }
     </script>

@@ -1,7 +1,24 @@
+function getConfig() {
+  const deafult = require('./deafult-config.json')
+  let file
+  try {
+    let current = require(process.env.LOCALAPPDATA + '\\iiow-editor\\prefrences.json')
+    file = { ...deafult, ...current }
+    //writeConfig(file)
+  } catch (e) {
+    file = deafult
+    // writeConfig(file)
+  }
+  return file
+}
+
 const { app, BrowserWindow, ipcMain } = require('electron');
 const isDevelopment = global.isDevelopment = !!process.env.npm_lifecycle_script
 const path = require('path');
 const https = require('https');
+const fs = require('fs')
+const extract = require('extract-zip')
+const config = getConfig()
 __dirname = path.resolve(__dirname).toString()
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 let version = require('./package.json').version
@@ -125,4 +142,37 @@ if (!gotTheLock) {
     }
     event.reply('eval', responce)
   })
+
+
+  ipcMain.on('sprites', async (event, command) => {
+    let responce
+    try {
+      await updateSprites()
+    }
+    catch (e) {
+      console.error(e)
+      responce = e
+    }
+    event.reply('sprites', responce)
+  })
+
+
+  const updateSprites = async () => {
+    const file = fs.createWriteStream(`${process.env.TMP}\\iiow-editor-sprites-tmp.zip`);
+    https.get('https://raw.githubusercontent.com/WilsontheWolf/iiow-editor-api/master/sprites.zip', function (response) {
+      response.pipe(file)
+    })
+    file.on('finish', () => {
+      extract(`${process.env.TMP}\\iiow-editor-sprites-tmp.zip`, { dir: process.env.LOCALAPPDATA + '\\iiow-editor\\data\\sprites' }, function (err) {
+        if (err)
+        return console.error(err)
+        fs.unlink(`${process.env.TMP}\\iiow-editor-sprites-tmp.zip`, err => {
+          if (err)
+            console.error(err)
+        })
+      })
+      
+    })
+  };
+
 }
