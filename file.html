@@ -21,5 +21,109 @@
       else document.write(`<p>Error reading save!<p>`)
     </script>
     <noscript>oof. Please enable scripts</noscript></p>
+    <canvas id="preview" width="384" height="384" style="border:1px solid #c3c3c3;position: absolute;top: 250px;"></canvas>
   <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>
       < back home</button> </p> </body> </html>
+
+
+      <script>
+        const cache = {};
+        let errs = 0
+        let tot = 0
+        var canvas = document.getElementById("preview");
+        var ctx = canvas.getContext("2d");
+        function waitImage(src) {
+          return new Promise((resolve, reject) => {
+            let img = new Image()
+            img.onload = () => resolve(img)
+            img.onerror = reject
+            img.src = src
+          })
+        }
+        drawIsland = async (scale = 1) => {
+          if (!file) document.write(`<p>Error reading save!<p>`)
+          island = file.island
+    
+          //ctx.fillStyle = "#FF0000";
+          //ctx.fillRect(0, 0, 150, 75);
+          const promises = [];
+          let time = 0;
+          for (let i = 0; i < 12; i++) {
+            for (let j = 0; j < 12; j++) {
+              if (island.block[i][j]) {
+                let name;
+                name = island.block[i][j].split("|")[0];
+                if (name) {
+                  tot += 1
+                  try {
+                    let url = `${require('electron').remote.getGlobal('loaded').data}\\sprites\\${name}.png`
+                    let image
+                    if (!cache[name]) {
+                      image = await waitImage(url)
+                      draw(image, i * 16 * scale, j * 16 * scale, scale)
+    
+                      cache[name] = image;
+                    }
+                    else {
+                      image = cache[name]
+                      if (image == 'error') return errs+= 1
+                      draw(image, i * 16 * scale, j * 16 * scale, scale);
+                    }
+                  } catch (e) {
+                    console.log(`Can't load image: ${name}`);
+                    cache[name] = 'error'
+                    errs += 1
+                  }
+                }
+              }
+              if (island.attachment[i][j]) {
+                let name;
+                name = island.attachment[i][j].split("|")[0];
+                if (name) {
+                  tot += 1
+                  try {
+                    let url = `${require('electron').remote.getGlobal('loaded').data}\\sprites\\${name}.png`
+                    let image
+                    if (!cache[name]) {
+                      image = await waitImage(url)
+                      draw(image, i * 16 * scale, j * 16 * scale, scale)
+    
+                      cache[name] = image;
+                    }
+                    else {
+                      image = cache[name]
+                      if (image == 'error') return errs += 1
+                      draw(image, i * 16 * scale, j * 16 * scale, scale);
+                    }
+                  } catch (e) {
+                    console.log(`Can't load image: ${name}`);
+                    cache[name] = 'error'
+                    errs += 1
+                  }
+                }
+              }
+            }
+          }
+        }
+        drawIsland(2)
+    
+        draw = (img, ax, ay, scale) => {
+          var offtx = document.createElement('canvas').getContext('2d');
+          offtx.drawImage(img, 0, 0);
+          var imgData = offtx.getImageData(0, 0, img.width, img.height).data;
+    
+          // Draw the scaled-up pixels to a different canvas context
+          for (var x = 0; x < img.width; ++x) {
+            for (var y = 0; y < img.height; ++y) {
+              // Find the starting index in the one-dimensional image data
+              var i = (y * img.width + x) * 4;
+              var r = imgData[i];
+              var g = imgData[i + 1];
+              var b = imgData[i + 2];
+              var a = imgData[i + 3];
+              ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (a / 255) + ")";
+              ctx.fillRect(ax + x * scale, ay + y * scale, scale, scale);
+            }
+          }
+        }
+      </script>
