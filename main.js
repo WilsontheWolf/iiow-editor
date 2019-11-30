@@ -194,7 +194,7 @@ async function setActivity() {
     startTimestamp,
     largeImageKey: 'icon-full',
     largeImageText: `iiow editor v${version}`,
-    smallImageKey: 'iiow-glitchhy',
+    smallImageKey: 'iiow-glitchy',
     smallImageText: 'Editing a save',
     instance: false,
   });
