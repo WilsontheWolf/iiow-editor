@@ -18,7 +18,12 @@ const path = require('path');
 const https = require('https');
 const fs = require('fs')
 const extract = require('extract-zip')
+const DiscordRPC = require('discord-rpc')
+const clientId = '650469346883403786';
+const rpc = new DiscordRPC.Client({ transport: 'ipc' });
 const config = getConfig()
+let startTimestamp = new Date()
+
 __dirname = path.resolve(__dirname).toString()
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 let version = require('./package.json').version
@@ -176,3 +181,32 @@ if (!gotTheLock) {
   };
 
 }
+async function setActivity() {
+  if (!rpc || !mainWindow) {
+    return;
+  }
+
+  const boops = await mainWindow.webContents.executeJavaScript('window.boops');
+
+  rpc.setActivity({
+    details: `Testing...`,//wut ur doing
+    state: 'test',//additiona deails
+    startTimestamp,
+    largeImageKey: 'icon-full',
+    largeImageText: `iiow editor v${version}`,
+    smallImageKey: 'iiow-glitchhy',
+    smallImageText: 'Editing a save',
+    instance: false,
+  });
+}
+
+rpc.on('ready', () => {
+  setActivity();
+
+  // activity can only be set every 15 seconds
+  setInterval(() => {
+    setActivity();
+  }, 15e3);
+});
+
+rpc.login({ clientId }).catch(console.error);
