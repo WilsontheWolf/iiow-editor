@@ -161,6 +161,10 @@ if (!gotTheLock) {
     event.reply('sprites', responce)
   })
 
+  ipcMain.on('rpc', async (event, command) => {
+    setActivity(command)
+  })
+
 
   const updateSprites = async () => {
     const file = fs.createWriteStream(`${process.env.TMP}\\iiow-editor-sprites-tmp.zip`);
@@ -181,23 +185,23 @@ if (!gotTheLock) {
   };
 
 }
-async function setActivity() {
+async function setActivity(details = {
+  details: `Testing...`,//wut ur doing
+  state: 'test',//additiona deails
+  startTimestamp,
+  largeImageKey: 'icon-full',
+  largeImageText: `iiow editor v${version}`,
+  smallImageKey: 'iiow-glitchy',
+  smallImageText: 'Editing a save',
+  instance: false,
+}) {
   if (!rpc || !mainWindow) {
     return;
   }
 
   const boops = await mainWindow.webContents.executeJavaScript('window.boops');
 
-  rpc.setActivity({
-    details: `Testing...`,//wut ur doing
-    state: 'test',//additiona deails
-    startTimestamp,
-    largeImageKey: 'icon-full',
-    largeImageText: `iiow editor v${version}`,
-    smallImageKey: 'iiow-glitchy',
-    smallImageText: 'Editing a save',
-    instance: false,
-  });
+  rpc.setActivity(details);
 }
 
 rpc.on('ready', () => {
