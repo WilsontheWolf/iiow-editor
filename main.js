@@ -162,7 +162,14 @@ if (!gotTheLock) {
   })
 
   ipcMain.on('rpc', async (event, command) => {
-    setActivity(command)
+    let defaults = {
+      largeImageKey: 'icon-full',
+      largeImageText: `IIOW Editor v${version}`,
+      instance: false,
+    }
+    if (!command) return
+    let result = {...defaults, ...command}
+    setActivity(result)
   })
 
 
@@ -186,31 +193,19 @@ if (!gotTheLock) {
 
 }
 async function setActivity(details = {
-  details: `Testing...`,//wut ur doing
-  state: 'test',//additiona deails
-  startTimestamp,
+  details: `IIOW Editor`,//wut ur doing
   largeImageKey: 'icon-full',
-  largeImageText: `iiow editor v${version}`,
-  smallImageKey: 'iiow-glitchy',
-  smallImageText: 'Editing a save',
+  largeImageText: `IIOW Editor v${version}`,
   instance: false,
 }) {
   if (!rpc || !mainWindow) {
     return;
   }
-
-  const boops = await mainWindow.webContents.executeJavaScript('window.boops');
-
   rpc.setActivity(details);
 }
 
 rpc.on('ready', () => {
   setActivity();
-
-  // activity can only be set every 15 seconds
-  setInterval(() => {
-    setActivity();
-  }, 15e3);
 });
 
 rpc.login({ clientId }).catch(console.error);
