@@ -19,6 +19,9 @@
       <p><button id="settings" class="nohover" ><img src=./assets/core.png width=30 ><br>${file.resources[2]}/${file.resources[1]} Lives</button><lb>
         <button id="settings" class="nohover" ><img src=./assets/money.png width=30 ><br>${file.resources[0]}</button></p>`)
       else document.write(`<p>Error reading save!<p>`)
+        if(file) require('./scripts/rp.js')({
+    state: '',
+  details: ''})
     </script>
     <noscript>oof. Please enable scripts</noscript></p>
     <canvas id="preview" width="384" height="384" style="border:1px solid #c3c3c3;position: absolute;top: 250px;"></canvas>

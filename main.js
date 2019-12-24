@@ -21,7 +21,7 @@ const extract = require('extract-zip')
 const DiscordRPC = require('discord-rpc')
 const clientId = '650469346883403786';
 const rpc = new DiscordRPC.Client({ transport: 'ipc' });
-const config = getConfig()
+let config = getConfig()
 let startTimestamp = new Date()
 
 __dirname = path.resolve(__dirname).toString()
@@ -159,6 +159,13 @@ if (!gotTheLock) {
       responce = e
     }
     event.reply('sprites', responce)
+  })
+
+  ipcMain.on('getConfig', async (event) => {
+    event.reply('config', config)
+  })
+  ipcMain.on('setConfig', async (event, c) => {
+    config = c
   })
 
   ipcMain.on('rpc', async (event, command) => {

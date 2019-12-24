@@ -10,10 +10,42 @@
 
 <body>
   <h1>Settings</h1>
-
-  <!--<button id="files" class="menu" onclick="location.href='./files.html';"><img src=icon.png width=30 ><br>View Files</button>-->
-  <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>
-      < back home</button> </p>
+  <div id="options">
+    <button id="loadLive" class="settings" onclick="toggle('loadLive')">Show a loading symbol when loading iisland
+      previews</button><br>
+    <button id="autoUpdateSprites" class="settings" onclick="toggle('autoUpdateSprites')">Automatically download new
+      sprites when they are released</button>
+  </div>
+  <button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>
+    < back home</button> <button id="save" class="menu" onclick="save();"><img src=./assets/icon.png width=30><br>Save
+      Changes
+  </button>
+  <script>
+    const { ipcRenderer } = require('electron')
+    let config
+    ipcRenderer.send('getConfig')
+    ipcRenderer.on('config', (event, c) => {
+      config = c
+      toggle()
+    })
+    function save() { ipcRenderer.send('setConfig', config) }
+    function toggle(item) {
+      if (item) {
+        let i = document.getElementById(item)
+        let c = !config[item]
+        config[item] = c
+        if (i) i.className = c ? 'checked' : 'unchecked'
+      }
+      else {
+        let items = ['loadLive', 'autoUpdateSprites']
+        items.forEach(e => {
+          let i = document.getElementById(e)
+        let c = config[e]
+        if (i) i.className = c ? 'checked' : 'unchecked'
+        })
+      }
+    }
+  </script>
 </body>
 
 </html>

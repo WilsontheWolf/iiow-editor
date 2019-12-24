@@ -53,6 +53,20 @@
             -webkit-app-region: no-drag;
         }
 
+        button.settings {
+            border-color: darkgray;
+        }
+        
+        .checked {
+            border-color: darkgreen;
+            background-color: green;
+        }
+
+        .unchecked {
+            border-color: darkred;
+            background-color: red;
+        }
+
         textarea {
             color: white;
             background-color: #36393f;
