@@ -1,3 +1,4 @@
+//keep this in mind for the future. https://github.com/electron/electron/issues/5113
 const writeConfig = async (c = config) => {
   fs.writeFile(process.env.LOCALAPPDATA + '\\iiow-editor\\prefrences.json', JSON.stringify(c), (err) => {
     // throws an error, you could also catch it here
@@ -5,7 +6,7 @@ const writeConfig = async (c = config) => {
 
     // success case, the file was saved
     console.log('Config saved!');
-});
+  });
 }
 
 function getConfig() {
@@ -84,7 +85,7 @@ if (!gotTheLock) {
       let final = JSON.parse(data)
       if (final) global.version.newest = final
       else global.version.newest = 'unknown'
-      if(config.spriteV < final.sprites && config.autoUpdateSprites) {
+      if (config.spriteV < final.sprites && config.autoUpdateSprites) {
         updateSprites()
       }
     });
@@ -189,7 +190,7 @@ if (!gotTheLock) {
       instance: false,
     }
     if (!command) return
-    let result = {...defaults, ...command}
+    let result = { ...defaults, ...command }
     setActivity(result)
   })
 
@@ -201,13 +202,33 @@ if (!gotTheLock) {
     file.on('finish', () => {
       extract(`${process.env.TMP}\\iiow-editor-sprites-tmp.zip`, { dir: process.env.LOCALAPPDATA + '\\iiow-editor\\data\\sprites' }, function (err) {
         if (err)
-        return console.error(err)
+          return console.error(err)
         fs.unlink(`${process.env.TMP}\\iiow-editor-sprites-tmp.zip`, err => {
           if (err)
             console.error(err)
         })
       })
-      
+      https.get('https://raw.githubusercontent.com/WilsontheWolf/iiow-editor-api/master/latest.json', (resp) => {
+        let data = '';
+
+        // A chunk of data has been recieved.
+        resp.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        // The whole response has been received. Print out the result.
+        resp.on('end', () => {
+          let final = JSON.parse(data)
+          if (final) {
+          config.spriteV = final
+          writeConfig(config)
+          }
+        });
+
+      }).on("error", (err) => {
+        global.version.newest = 'unknown'
+        console.error("Error: " + err.message);
+      });
     })
   };
 
