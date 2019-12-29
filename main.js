@@ -1,13 +1,23 @@
+const writeConfig = async (c = config) => {
+  fs.writeFile(process.env.LOCALAPPDATA + '\\iiow-editor\\prefrences.json', JSON.stringify(c), (err) => {
+    // throws an error, you could also catch it here
+    if (err) throw err;
+
+    // success case, the file was saved
+    console.log('Config saved!');
+});
+}
+
 function getConfig() {
   const deafult = require('./deafult-config.json')
   let file
   try {
     let current = require(process.env.LOCALAPPDATA + '\\iiow-editor\\prefrences.json')
     file = { ...deafult, ...current }
-    //writeConfig(file)
+    writeConfig(file)
   } catch (e) {
     file = deafult
-    // writeConfig(file)
+    writeConfig(file)
   }
   return file
 }
@@ -74,6 +84,9 @@ if (!gotTheLock) {
       let final = JSON.parse(data)
       if (final) global.version.newest = final
       else global.version.newest = 'unknown'
+      if(config.spriteV < final.sprites && config.autoUpdateSprites) {
+        updateSprites()
+      }
     });
 
   }).on("error", (err) => {
@@ -166,6 +179,7 @@ if (!gotTheLock) {
   })
   ipcMain.on('setConfig', async (event, c) => {
     config = c
+    writeConfig()
   })
 
   ipcMain.on('rpc', async (event, command) => {
@@ -178,7 +192,6 @@ if (!gotTheLock) {
     let result = {...defaults, ...command}
     setActivity(result)
   })
-
 
   const updateSprites = async () => {
     const file = fs.createWriteStream(`${process.env.TMP}\\iiow-editor-sprites-tmp.zip`);
