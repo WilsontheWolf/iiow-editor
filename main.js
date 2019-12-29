@@ -220,7 +220,7 @@ if (!gotTheLock) {
         resp.on('end', () => {
           let final = JSON.parse(data)
           if (final) {
-          config.spriteV = final
+          config.spriteV = final.sprites
           writeConfig(config)
           }
         });
