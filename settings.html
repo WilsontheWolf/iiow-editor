@@ -14,12 +14,12 @@
     <button id="loadLive" class="settings" onclick="toggle('loadLive')">Show a loading symbol when loading iisland
       previews</button><br>
     <button id="autoUpdateSprites" class="settings" onclick="toggle('autoUpdateSprites')">Automatically download new
-      sprites when they are released</button>
+      sprites when they are released</button><br>
+      <button id="autoUpdateSprites" class="settings" onclick="updateSprites()">Update/Download Sprites</button>
+      <br> <br>
   </div>
-  <button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>
-    < back home</button> <button id="save" class="menu" onclick="save();"><img src=./assets/icon.png width=30><br>Save
-      Changes
-  </button>
+  <button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>< back home</button> 
+    <button id="save" class="menu" onclick="save();"><img src=./assets/icon.png width=30><br>Save Changes</button>
   <script>
     const { ipcRenderer } = require('electron')
     let config
@@ -29,6 +29,7 @@
       toggle()
     })
     function save() { ipcRenderer.send('setConfig', config) }
+    function updateSprites() { ipcRenderer.send('sprites') }
     function toggle(item) {
       if (item) {
         let i = document.getElementById(item)

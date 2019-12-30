@@ -166,7 +166,7 @@ if (!gotTheLock) {
   ipcMain.on('sprites', async (event, command) => {
     let responce
     try {
-      await updateSprites()
+      responce = updateSprites()
     }
     catch (e) {
       console.error(e)
