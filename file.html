@@ -24,6 +24,7 @@
   details: ''})
     </script>
     <noscript>oof. Please enable scripts</noscript></p>
+    <p id="info">
     <canvas id="preview" width="384" height="384" style="border:1px solid #c3c3c3;position: absolute;top: 250px;"></canvas>
   <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>
       < back home</button> </p> </body> </html>
@@ -76,6 +77,7 @@
                     console.log(`Can't load image: ${name}`);
                     cache[name] = 'error'
                     errs += 1
+                    document.getElementById("info").innerText =  `There were ${errs} error(s) while loading this iisland. Please make sure you download the sprites in the settings.`
                   }
                 }
               }
@@ -102,6 +104,7 @@
                     console.log(`Can't load image: ${name}`);
                     cache[name] = 'error'
                     errs += 1
+                    document.getElementById("info").innerText =  `There were ${errs} error(s) while loading this iisland. Please make sure you download the sprites in the settings.`
                   }
                 }
               }
