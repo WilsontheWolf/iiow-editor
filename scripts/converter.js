@@ -37,26 +37,34 @@ function convert62(save) {
   let island = save.player.data.split(' ')
   let extra = []
   let max = 8
-  if (parseFloat(save.exists.version) >= 6.4) max = 9
+  let version = parseFloat(save.exists.version)
+  if (version >= 6.4 && version < 7) max = 9
+  if (version >= 7) {
+    max = 7
+    extra.push('0')
+    extra.push('0')
+  }
   for (i = 0; i < max; i++) {
     extra.push(island.shift())
   }
-  if (parseFloat(save.exists.version) < 6.4) extra.push("0")
+  if (version < 6.4) extra.push("0")
   island = client.parse_island(island, null, true)
-  island = client.parse_islandId(island, parseFloat(save.exists.version))
+  console.log(island)
+  island = client.parse_islandId(island, version)
+  console.log(island)
   island.extra = extra
   let resources = []
   save.resources.resources.split(" ").forEach(r => {
     if (r) resources.push(parseFloat(r))
   })
-  let realm = { v: parseFloat(save.exists.version), data: save.realm, realm: 1 }
+  let realm = { v: version, data: save.realm, realm: 1 }
   let inventory = save.inventory
-  inventory.inventory = client.parse_inv(inventory.inventory, parseFloat(save.exists.version))
+  inventory.inventory = client.parse_inv(inventory.inventory, version)
   return {
     island: island,
     resources: resources,
     inventory: inventory,
     realm: realm,
-    version: parseFloat(save.exists.version)
+    version: version
   }
 }
