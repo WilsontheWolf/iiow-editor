@@ -13,7 +13,7 @@ function waitImage(src) {
     //ctx.fillStyle = "#FF0000";
     //ctx.fillRect(0, 0, 150, 75);
     const promises = [];
-    let time = 0;
+    let time = Date.now();
     for (let i = 0; i < 12; i++) {
       for (let j = 0; j < 12; j++) {
         if (island.block[i][j]) {
@@ -24,20 +24,20 @@ function waitImage(src) {
             try {
               let url = `${require('electron').remote.getGlobal('loaded').data}\\sprites\\${name}.png`
               let image
-              if (!cache[name]) {
+            //   if (!cache[name]) {
                 image = await waitImage(url)
                 draw(image, i * 16 * scale, j * 16 * scale, scale, ctx)
 
-                cache[name] = image;
-              }
-              else {
-                image = cache[name]
-                if (image == 'error') return errs+= 1
-                draw(image, i * 16 * scale, j * 16 * scale, scale, ctx);
-              }
+            //     cache[name] = image;
+            //   }
+            //   else {
+                // image = cache[name]
+                // if (image == 'error') return errs+= 1
+                // draw(image, i * 16 * scale, j * 16 * scale, scale, ctx);
+            //   }
             } catch (e) {
-              console.log(`Can't load image: ${name}`);
-              cache[name] = 'error'
+              console.log(`Can't load image: ${name}`,e);
+            //   cache[name] = 'error'
               errs += 1
               document.getElementById("info").innerText =  `There were ${errs} error(s) while loading this iisland. Please make sure you download the sprites in the settings.`
             }
@@ -72,6 +72,7 @@ function waitImage(src) {
         }
       }
     }
+    console.log(Date.now() - time)
   }
 
   draw = (img, ax, ay, scale, ctx) => {
@@ -93,4 +94,12 @@ function waitImage(src) {
         ctx.fillRect(ax + x * scale, ay + y * scale, scale, scale);
       }
     }
+  }
+
+  save = async (scale = 1, file) => {
+    let canvas = document.createElement('canvas')
+    let ctx = canvas.getContext("2d");
+    await drawIsland(scale, file, ctx)
+    var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");  // here is the most important part because if you dont replace you will get a DOM 18 exception.
+    window.location.href=image; // it will save locally
   }
