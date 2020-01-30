@@ -66,7 +66,8 @@ module.exports = (client) => {
 
   }
 
-  client.parse_island = (file, object = true, island = false) => {
+  
+  client.parse_island_5 = (file, object = true, island = false) => {
     try {
       let parsed_save = {
         "block": [],
@@ -114,6 +115,19 @@ module.exports = (client) => {
         };
       };
       return parsed_save;
+    } catch (e) { console.error(e); };
+  };
+  client.parse_island_7 = (file, object = true, island = false) => {
+    try {
+      let save_file
+      if (!island) {
+        if (!object) save_file = client.readFile(file);
+        else save_file = file
+      }
+      let buffer
+      if (!island) buffer = save_file.island.island.split(' ');
+      else buffer = file
+      console.log(buffer)
     } catch (e) { console.error(e); };
   };
   client.reverse_island = (par) => {
