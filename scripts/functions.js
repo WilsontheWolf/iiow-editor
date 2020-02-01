@@ -66,7 +66,7 @@ module.exports = (client) => {
 
   }
 
-  
+
   client.parse_island_5 = (file, object = true, island = false) => {
     try {
       let parsed_save = {
@@ -127,8 +127,23 @@ module.exports = (client) => {
       let buffer
       if (!island) buffer = save_file.island.island.split(' ');
       else buffer = file
-      console.log(buffer)
+      for (let i = 6; i < buffer.length; i++) {
+        let val = buffer[i]
+        let int = parseInt(val)
+        if (int) {
+          let string = ''
+          for (let j = 0; j < int; j++) string += ' _ _ _'
+          string = string.trim()
+          buffer[i] = string
+        }
+      }
+      buffer = buffer.join(' ').split(' ')//this resets it cause the thing takes an array and it is an improperly formatted one rn
+      return client.parse_island_5(buffer, false, true)
     } catch (e) { console.error(e); };
+  };
+  client.parse_island = (file, object = true, island = false, version) => {
+    if (version >= 7.2) return client.parse_island_7(file, object, island)
+    else return client.parse_island_5(file, object, island)
   };
   client.reverse_island = (par) => {
     try {

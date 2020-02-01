@@ -39,8 +39,13 @@ function convert62(save) {
   let max = 8
   let version = parseFloat(save.exists.version)
   if (version >= 6.4 && version < 7) max = 9
-  if (version >= 7) {
+  if (version >= 7 && version < 7.2) {
     max = 7
+    extra.push('0')
+    extra.push('0')
+  }
+  if (version >= 7.2 /*&& version < 7.2*/) {
+    max = 8
     extra.push('0')
     extra.push('0')
   }
@@ -48,10 +53,9 @@ function convert62(save) {
     extra.push(island.shift())
   }
   if (version < 6.4) extra.push("0")
-  island = client.parse_island(island, null, true)
-  console.log(island)
-  island = client.parse_islandId(island, version)
-  console.log(island)
+  island = client.parse_island(island, null, true, version)
+  fIsland = client.parse_islandId(island, version)
+  if(fIsland) island = fIsland
   island.extra = extra
   let resources = []
   save.resources.resources.split(" ").forEach(r => {

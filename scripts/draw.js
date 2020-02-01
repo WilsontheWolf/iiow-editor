@@ -72,7 +72,6 @@ function waitImage(src) {
         }
       }
     }
-    console.log(Date.now() - time)
   }
 
   draw = (img, ax, ay, scale, ctx) => {

@@ -16,7 +16,6 @@
       // You can also require other files to run in this process
       const { ipcRenderer } = require('electron')
       ipcRenderer.on('eval', (event, arg) => {
-        console.log(arg) // prints "pong"
         let responce = arg
         if (typeof evaled !== "string") {
           responce = require("util").inspect(responce, { "depth": 10 });
