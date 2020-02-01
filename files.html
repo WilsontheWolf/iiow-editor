@@ -20,7 +20,8 @@
         require('./scripts/functions.js')(functions)
         files = await functions.finder()
         document.getElementById("total").innerHTML = `${files[0].length/*+files[1].length*/} files found.`;
-
+        const { ipcRenderer } = require('electron')
+      ipcRenderer.send('rpc', {state:`Viewing ${files[0].length} files`})
         var options = document.getElementById("options")
         for (i = 0; i < files[0].length; i++) {
           let opt = document.createElement("option");

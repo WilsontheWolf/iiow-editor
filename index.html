@@ -19,7 +19,10 @@
   <button id="settings" class="menu" onclick="location.href='./settings.html';"><img src=./assets/settings.png
       width=30><br>Settings</button>
   <p id=dev></p>
-  <script>if (require('electron').remote.getGlobal('isDevelopment')) document.getElementById('dev').innerHTML = "<a href=\"./dev/index.html\">Dev Menu</a>"</script>
+  <script>
+  const { ipcRenderer } = require('electron')
+      ipcRenderer.send('rpc', {state:'Home'})
+  if (require('electron').remote.getGlobal('isDevelopment')) document.getElementById('dev').innerHTML = "<a href=\"./dev/index.html\">Dev Menu</a>"</script>
 </body>
 
 </html>

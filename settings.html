@@ -22,6 +22,7 @@
     <button id="save" class="menu" onclick="save();"><img src=./assets/icon.png width=30><br>Save Changes</button>
   <script>
     const { ipcRenderer } = require('electron')
+      ipcRenderer.send('rpc', {state:'Settings'})
     let config
     ipcRenderer.send('getConfig')
     ipcRenderer.on('config', (event, c) => {

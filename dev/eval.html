@@ -15,6 +15,7 @@
     <script>
       // You can also require other files to run in this process
       const { ipcRenderer } = require('electron')
+      ipcRenderer.send('rpc', {state:'Dev Menu'})
       ipcRenderer.on('eval', (event, arg) => {
         let responce = arg
         if (typeof evaled !== "string") {

@@ -25,3 +25,7 @@
         <p><button id="settings" class="menu" onclick="location.href='../index.html';"><img src=../assets/home.png
               width=30><br>
             < back home</button> </p> </body> </html>
+            <script>
+            const { ipcRenderer } = require('electron')
+      ipcRenderer.send('rpc', {state:'Dev Menu'})
+      </script>
