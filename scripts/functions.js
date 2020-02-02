@@ -127,7 +127,7 @@ module.exports = (client) => {
       let buffer
       if (!island) buffer = save_file.island.island.split(' ');
       else buffer = file
-      for (let i = 6; i < buffer.length; i++) {
+      for (let i = 6; i < buffer.length; i+=3) {
         let val = buffer[i]
         let int = parseInt(val)
         if (int) {
@@ -135,6 +135,7 @@ module.exports = (client) => {
           for (let j = 0; j < int; j++) string += ' _ _ _'
           string = string.trim()
           buffer[i] = string
+          i ++
         }
       }
       buffer = buffer.join(' ').split(' ')//this resets it cause the thing takes an array and it is an improperly formatted one rn
