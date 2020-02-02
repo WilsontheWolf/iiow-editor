@@ -1,9 +1,8 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-module.exports = () => {
+module.exports = (fileLocation = require('electron').remote.getGlobal('loaded').file) => {
   client = {}
-  let fileLocation = require('electron').remote.getGlobal('loaded').file
   require('./functions')(client)
   let save = client.readLocalFile(fileLocation)
   if (!save.exists || !save.exists.version) return

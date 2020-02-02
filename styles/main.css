@@ -56,7 +56,7 @@
         button.settings {
             border-color: darkgray;
         }
-        
+
         .checked {
             border-color: darkgreen;
             background-color: green;
@@ -97,4 +97,46 @@
             background-color: rgba(0, 0, 0, 0.5);
             /* a nice fade effect, visibility toggles after 175ms, opacity will animate for 175ms. note display:none cannot be animated.  */
             transition: visibility 175ms, opacity 175ms;
+        }
+
+        .pic {
+            grid-area: image;
+            height: 50px;
+            width: 50px;
+        }
+
+        .title {
+            grid-area: title;
+            width: 178px;
+        }
+
+        .stats {
+            grid-area: stats;
+            width: 178px;
+        }
+
+        .file {
+            display: grid;
+            grid-template-areas:
+                'image title'
+                'image stats';
+            grid-gap: 1px;
+            padding: 5px;
+            width: 230px;
+            height: 50px;
+            background-color: #202124;
+            float: left;
+            margin: 5px;
+        }
+
+        .file>div {
+            background-color: #36393f;
+            text-align: center;
+            padding: 0px 0;
+            font-size: 20px;
+        }
+
+        .textimg {
+            height: 1em;
+            vertical-align: text-bottom;
         }

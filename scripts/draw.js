@@ -9,7 +9,8 @@ function waitImage(src) {
   drawIsland = async (scale = 1, file, ctx) => {
     if (!file) document.write(`<p>Error reading save!<p>`)
     island = file.island
-
+    let errs = 0
+    let tot = 0
     //ctx.fillStyle = "#FF0000";
     //ctx.fillRect(0, 0, 150, 75);
     const promises = [];
