@@ -42,6 +42,11 @@
             filter: brightness(100%);
         }
 
+        button.border {
+            border-color: #202124;
+            margin: 1px;
+        }
+
         button.title-bar-btns {
             top: 0px;
             position: fixed;
@@ -107,12 +112,12 @@
 
         .title {
             grid-area: title;
-            width: 178px;
+            width: 190px;
         }
 
         .stats {
             grid-area: stats;
-            width: 178px;
+            width: 190px;
         }
 
         .file {
@@ -122,7 +127,7 @@
                 'image stats';
             grid-gap: 1px;
             padding: 5px;
-            width: 230px;
+            width: 240px;
             height: 50px;
             background-color: #202124;
             float: left;
@@ -139,4 +144,12 @@
         .textimg {
             height: 1em;
             vertical-align: text-bottom;
+        }
+
+        .smallfont {
+            font-size: .9em;
+        }
+        
+        .danger { 
+            color: red
         }

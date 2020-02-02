@@ -31,6 +31,16 @@
           <script async>
             const cache = {};
             // You can also require other saveFiles to run in this process
+            function hover(event) {
+              let e = event.srcElement.lastElementChild
+              e.children[0].hidden = true
+              e.children[1].hidden = false
+            }
+            function unHover(event) {
+              let e = event.srcElement.lastElementChild
+              e.children[0].hidden = false
+              e.children[1].hidden = true
+            }
             (async () => {
               async function asyncForEach(array, callback) {
                 for (let index = 0; index < array.length; index++) {
@@ -53,12 +63,11 @@
                 opt.text = saveFiles[0][i];
                 options.add(opt, null);
               }
-              await asyncForEach(saveFiles[0], async f => {
+              saveFiles[0].forEach(async f => {
                 let fileName = f
                 const save = require('./scripts/converter.js')(`${require('electron').remote.getGlobal('loaded').path}\\${fileName}`)
                 let file = document.createElement('div')
                 file.className = "file"
-                file.onclick = function () { getStats(fileName); }
                 let pic = document.createElement('div')
                 pic.className = "pic"
                 file.appendChild(pic)
@@ -69,14 +78,36 @@
                 let stats = document.createElement('div')
                 stats.className = "stats"
                 file.appendChild(stats)
+                file.addEventListener("mouseenter", hover);
+                file.addEventListener("mouseleave", unHover);
                 let canvas = document.createElement('canvas')
                 canvas.height = 50
                 canvas.width = 50
                 canvas.id = `canvas-${fileName}`
                 pic.appendChild(canvas)
                 filesDiv.appendChild(file)
+                let statsDetails = document.createElement('span')
+                stats.appendChild(statsDetails)
+                let statsButtons = document.createElement('span')
+                statsButtons.hidden = true
+                let buttons = ['View', 'Modify', 'Delete']
+                buttons.forEach(b => {
+                  let but = document.createElement('button')
+                  let cn = b == 'Delete' ? 'border danger' : 'border'
+                  but.className = cn
+                  but.innerText = b
+                  statsButtons.appendChild(but)
+                })
+                // statsButtons.innerHTML = '<button class="border">View File</button><button class="border">Modify File</button>'
+                stats.appendChild(statsButtons)
                 try {
-                  stats.innerHTML = `v${save.version} ${save.resources[2]}/${save.resources[1]}<img src="./assets/core.png" class="textimg"> <img src="./assets/money.png" class="textimg">${save.resources[0]}`
+                  let v = 'v' + save.version.toString()
+                  let mon = save.resources[0] > 99999 ? '99999+' : save.resources[0].toString()
+                  let lo = save.resources[2] > 9 ? '9+' : save.resources[2].toString()
+                  let lt = save.resources[1] > 9 ? '9+' : save.resources[1].toString()
+                  let l = lo == lt ? lo : lo + '/' + lt
+                  if (l.length + mon.length + v.length >= 15) statsDetails.className = 'smallfont'
+                  statsDetails.innerHTML = `${v} ${l}<img src="./assets/core.png" class="textimg"> <img src="./assets/money.png" class="textimg">${mon}`
                 }
                 catch (e) {
                   stats.innerHTML = 'Error!'
