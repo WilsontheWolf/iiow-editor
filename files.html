@@ -20,70 +20,84 @@
 
   <p id="total"></p>
   <p>
-  <select id='options' onchange="if (this.selectedIndex) getStats();">
-    <option disabled selected value='none'>Choose One</option>
-  </select> <p>
-    <button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>
-      < back home</button> </p>
-  <div id="saveFiles"></div>
-  <script async>
-    const cache = {};
-    // You can also require other saveFiles to run in this process
-    (async () => {
-      async function asyncForEach(array, callback) {
-        for (let index = 0; index < array.length; index++) {
-          await callback(array[index], index, array);
-        }
-      }
-      let functions = {}
-      require('./scripts/functions.js')(functions)
-      saveFiles = await functions.finder()
-      document.getElementById("total").innerHTML = `${saveFiles[0].length/*+saveFiles[1].length*/} files found.`;
-      const { ipcRenderer } = require('electron')
-      ipcRenderer.send('rpc', { state: `Viewing ${saveFiles[0].length} files` })
-      // var options = document.getElementById("options")
-      let filesDiv = document.getElementById('saveFiles')
-      let filesObj = {}
-      var options = document.getElementById("options")
-      for (i = 0; i < saveFiles[0].length; i++) {
-        let opt = document.createElement("option");
-        opt.value = saveFiles[0][i];
-        opt.text = saveFiles[0][i];
-        options.add(opt, null);
-      }
-      await asyncForEach(saveFiles[0], async f => {
-        let fileName = f
-        const save = require('./scripts/converter.js')(`${require('electron').remote.getGlobal('loaded').path}\\${fileName}`)
-        let file = document.createElement('div')
-        file.className = "file"
-        file.onclick= function() {getStats(fileName);}
-        let pic = document.createElement('div')
-        pic.className = "pic"
-        file.appendChild(pic)
-        let title = document.createElement('div')
-        title.className = "title"
-        title.innerText = fileName
-        file.appendChild(title)
-        let stats = document.createElement('div')
-        stats.className = "stats"
-        stats.innerHTML = `v${save.version} ${save.resources[2]}/${save.resources[1]}<img src="./assets/core.png" class="textimg"> <img src="./assets/money.png" class="textimg">${save.resources[0]}`
-        file.appendChild(stats)
-        let canvas = document.createElement('canvas')
-        canvas.height = 50
-        canvas.width = 50
-        pic.appendChild(canvas)
-        let ctx = canvas.getContext("2d");
-        filesDiv.appendChild(file)
-        // filesDiv.appendChild(document.createElement('br'))
-        await drawIsland(0.2604166666666667, save, ctx)
-      }
-      )
-    })()
-    function getStats(file = saveFiles[0][options.selectedIndex - 1]) {
+    <select id='options' onchange="if (this.selectedIndex) getStats();">
+      <option disabled selected value='none'>Choose One</option>
+    </select>
+    <p>
+      <button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png
+          width=30><br>
+        < back home</button> </p> <div id="saveFiles">
+          </div>
+          <script async>
+            const cache = {};
+            // You can also require other saveFiles to run in this process
+            (async () => {
+              async function asyncForEach(array, callback) {
+                for (let index = 0; index < array.length; index++) {
+                  await callback(array[index], index, array);
+                }
+              }
+              let functions = {}
+              require('./scripts/functions.js')(functions)
+              saveFiles = await functions.finder()
+              document.getElementById("total").innerHTML = `${saveFiles[0].length/*+saveFiles[1].length*/} files found.`;
+              const { ipcRenderer } = require('electron')
+              ipcRenderer.send('rpc', { state: `Viewing ${saveFiles[0].length} files` })
+              // var options = document.getElementById("options")
+              let filesDiv = document.getElementById('saveFiles')
+              let filesObj = {}
+              var options = document.getElementById("options")
+              for (i = 0; i < saveFiles[0].length; i++) {
+                let opt = document.createElement("option");
+                opt.value = saveFiles[0][i];
+                opt.text = saveFiles[0][i];
+                options.add(opt, null);
+              }
+              await asyncForEach(saveFiles[0], async f => {
+                let fileName = f
+                const save = require('./scripts/converter.js')(`${require('electron').remote.getGlobal('loaded').path}\\${fileName}`)
+                let file = document.createElement('div')
+                file.className = "file"
+                file.onclick = function () { getStats(fileName); }
+                let pic = document.createElement('div')
+                pic.className = "pic"
+                file.appendChild(pic)
+                let title = document.createElement('div')
+                title.className = "title"
+                title.innerText = fileName
+                file.appendChild(title)
+                let stats = document.createElement('div')
+                stats.className = "stats"
+                file.appendChild(stats)
+                let canvas = document.createElement('canvas')
+                canvas.height = 50
+                canvas.width = 50
+                canvas.id = `canvas-${fileName}`
+                pic.appendChild(canvas)
+                filesDiv.appendChild(file)
+                try {
+                  stats.innerHTML = `v${save.version} ${save.resources[2]}/${save.resources[1]}<img src="./assets/core.png" class="textimg"> <img src="./assets/money.png" class="textimg">${save.resources[0]}`
+                }
+                catch (e) {
+                  stats.innerHTML = 'Error!'
+                  console.error(e)
+                }
+              })
+              asyncForEach(saveFiles[0], async f => {
+                const save = require('./scripts/converter.js')(`${require('electron').remote.getGlobal('loaded').path}\\${f}`)
+                if (save) {
+                  let ctx = document.getElementById(`canvas-${f}`).getContext("2d");
+                  await drawIsland(0.2604166666666667, save, ctx).catch(e => console.error(e))
+                }
+              })
+            })()
+            function getStats(file = saveFiles[0][options.selectedIndex - 1]) {
 
-      require('electron').remote.getGlobal('loaded').file = `${require('electron').remote.getGlobal('loaded').path}\\${file}`
-      window.location.href = "./file.html";
-    }
-  </script>
-  <noscript>oof. Please enable scripts</noscript></p>
-  </body> </html>
+              require('electron').remote.getGlobal('loaded').file = `${require('electron').remote.getGlobal('loaded').path}\\${file}`
+              window.location.href = "./file.html";
+            }
+          </script>
+          <noscript>oof. Please enable scripts</noscript></p>
+</body>
+
+</html>
