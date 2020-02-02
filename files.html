@@ -40,7 +40,7 @@
       saveFiles = await functions.finder()
       document.getElementById("total").innerHTML = `${saveFiles[0].length/*+saveFiles[1].length*/} files found.`;
       const { ipcRenderer } = require('electron')
-      ipcRenderer.send('rpc', { state: `Viewing ${saveFiles[0].length} saveFiles` })
+      ipcRenderer.send('rpc', { state: `Viewing ${saveFiles[0].length} files` })
       // var options = document.getElementById("options")
       let filesDiv = document.getElementById('saveFiles')
       let filesObj = {}

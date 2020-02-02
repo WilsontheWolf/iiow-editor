@@ -1,7 +1,7 @@
 {
   "name": "iiow-editor",
   "productName": "IIOW Editor",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A IIslands of war save file manager.",
   "main": "main.js",
   "licence": "MIT",
