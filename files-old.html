@@ -32,7 +32,6 @@
             const cache = {};
             // You can also require other saveFiles to run in this process
             function hover(event) {
-                console.log(event.srcElement)
               let e = event.srcElement.lastElementChild
               e.children[0].hidden = true
               e.children[1].hidden = false
@@ -75,21 +74,21 @@
                 file.appendChild(pic)
                 let title = document.createElement('div')
                 title.className = "title"
-                // title.innerText = fileName
+                title.innerText = fileName
                 file.appendChild(title)
-                // let stats = document.createElement('div')
-                // stats.className = "stats"
-                // file.appendChild(stats)
+                let stats = document.createElement('div')
+                stats.className = "stats"
+                file.appendChild(stats)
                 file.addEventListener("mouseenter", hover);
                 file.addEventListener("mouseleave", unHover);
                 let canvas = document.createElement('canvas')
-                canvas.height = 190
-                canvas.width = 190
+                canvas.height = 50
+                canvas.width = 50
                 canvas.id = `canvas-${fileName}`
                 pic.appendChild(canvas)
                 filesDiv.appendChild(file)
                 let statsDetails = document.createElement('span')
-                title.appendChild(statsDetails)
+                stats.appendChild(statsDetails)
                 let statsButtons = document.createElement('span')
                 statsButtons.hidden = true
                 let buttons = ['View', 'Modify', 'Delete']
@@ -102,27 +101,26 @@
                   statsButtons.appendChild(but)
                 })
                 // statsButtons.innerHTML = '<button class="border">View File</button><button class="border">Modify File</button>'
-                title.appendChild(statsButtons)
-                statsDetails.innerHTML = fileName
-                // try {
-                //   let v = 'v' + save.version.toString()
-                //   let mon = save.resources[0] > 99999 ? '99999+' : save.resources[0].toString()
-                //   let lo = save.resources[2] > 9 ? '9+' : save.resources[2].toString()
-                //   let lt = save.resources[1] > 9 ? '9+' : save.resources[1].toString()
-                //   let l = lo == lt ? lo : lo + '/' + lt
-                //   if (l.length + mon.length + v.length >= 15) statsDetails.className = 'smallfont'
-                //   statsDetails.innerHTML = `${v} ${l}<img src="./assets/core.png" class="textimg"> <img src="./assets/money.png" class="textimg">${mon}`
-                // }
-                // catch (e) {
-                //   stats.innerHTML = 'Error!'
-                //   console.error(e)
-                // }
+                stats.appendChild(statsButtons)
+                try {
+                  let v = 'v' + save.version.toString()
+                  let mon = save.resources[0] > 99999 ? '99999+' : save.resources[0].toString()
+                  let lo = save.resources[2] > 9 ? '9+' : save.resources[2].toString()
+                  let lt = save.resources[1] > 9 ? '9+' : save.resources[1].toString()
+                  let l = lo == lt ? lo : lo + '/' + lt
+                  if (l.length + mon.length + v.length >= 15) statsDetails.className = 'smallfont'
+                  statsDetails.innerHTML = `${v} ${l}<img src="./assets/core.png" class="textimg"> <img src="./assets/money.png" class="textimg">${mon}`
+                }
+                catch (e) {
+                  stats.innerHTML = 'Error!'
+                  console.error(e)
+                }
               })
               asyncForEach(saveFiles[0], async f => {
                 const save = require('./scripts/converter.js')(`${require('electron').remote.getGlobal('loaded').path}\\${f}`)
                 if (save) {
                   let ctx = document.getElementById(`canvas-${f}`).getContext("2d");
-                  await drawIsland(0.9895833333333334, save, ctx).catch(e => console.error(e))
+                  await drawIsland(0.2604166666666667, save, ctx).catch(e => console.error(e))
                 }
               })
             })()
