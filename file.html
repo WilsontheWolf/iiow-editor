@@ -17,25 +17,28 @@
       // You can also require other files to run in this process
       const file = require('./scripts/converter.js')()
       const { ipcRenderer } = require('electron')
-      if (file.version) ipcRenderer.send('rpc', {state: `Viewing a v${file.version} save`})
-      else ipcRenderer.send('rpc', {state: `Viewing a save`})
+      if (file.version) ipcRenderer.send('rpc', { state: `Viewing a v${file.version} save` })
+      else ipcRenderer.send('rpc', { state: `Viewing a save` })
       if (file) document.write(`Save Version: v${file.version}
       <p><button id="settings" class="nohover" ><img src=./assets/core.png width=30 ><br>${file.resources[2]}/${file.resources[1]} Lives</button><lb>
         <button id="settings" class="nohover" ><img src=./assets/money.png width=30 ><br>${file.resources[0]}</button></p>`)
       else document.write(`<p>Error reading save!<p>`)
     </script>
-    <noscript>oof. Please enable scripts</noscript></p>
     <p id="info">
-    <canvas id="preview" width="384" height="384" style="border:1px solid #c3c3c3;position: absolute;top: 250px;"></canvas>
-  <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>
-      < back home</button> </p> </body> </html>
-
-
-      <script>
-        const cache = {};
-        let errs = 0
-        let tot = 0
-        var canvas = document.getElementById("preview");
-        var ctx = canvas.getContext("2d");
-        drawIsland(2, file, ctx)
-      </script>
+      <canvas id="preview" width="384" height="384"
+        style="border:1px solid #c3c3c3;position: absolute;top: 250px;"></canvas>
+      <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png
+            width=30><br>
+          < back home</button> </p> </body> </html> <script>
+            const cache = {};
+            let errs = 0
+            let tot = 0
+            var canvas = document.getElementById("preview");
+            var ctx = canvas.getContext("2d");
+            drawIsland(2, file, ctx)
+            .catch(e => {
+              console.error(e)
+              if(typeof(e) != 'number')document.getElementById("info").innerText = `There was a error while loading this iisland. Please make sure you download the sprites and id files in the settings.`
+              else document.getElementById("info").innerText = `There were ${e} error${e == 1 ? '' : 's'} while loading this iisland. Please make sure you download the sprites and id files in the settings.` 
+            })
+          </script>

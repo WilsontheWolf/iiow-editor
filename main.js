@@ -88,7 +88,7 @@ if (!gotTheLock) {
       if (config.spriteV < final.sprites && config.autoUpdateSprites) {
         updateSprites()
       }
-      if (config.idV < final.ids && config.autoUpdateSprites) {
+      if (config.idV < final.ids && config.autoUpdateIds) {
         updateIds()
       }
     });
@@ -273,7 +273,7 @@ if (!gotTheLock) {
         resp.on('end', () => {
           let final = JSON.parse(data)
           if (final) {
-          config.spriteV = final.sprites
+          config.idV = final.ids
           writeConfig(config)
           }
         });

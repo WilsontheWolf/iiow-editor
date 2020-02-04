@@ -7,7 +7,6 @@ function waitImage(src) {
     })
   }
   drawIsland = async (scale = 1, file, ctx) => {
-    if (!file) document.write(`<p>Error reading save!<p>`)
     island = file.island
     let errs = 0
     let tot = 0
@@ -40,7 +39,6 @@ function waitImage(src) {
               console.log(`Can't load image: ${name}`,e);
             //   cache[name] = 'error'
               errs += 1
-              document.getElementById("info").innerText =  `There were ${errs} error(s) while loading this iisland. Please make sure you download the sprites in the settings.`
             }
           }
         }
@@ -67,12 +65,12 @@ function waitImage(src) {
               console.log(`Can't load image: ${name}`);
               cache[name] = 'error'
               errs += 1
-              document.getElementById("info").innerText =  `There were ${errs} error(s) while loading this iisland. Please make sure you download the sprites in the settings.`
             }
           }
         }
       }
     }
+    if(errs) throw errs 
   }
 
   draw = (img, ax, ay, scale, ctx) => {

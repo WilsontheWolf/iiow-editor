@@ -2,5 +2,6 @@
     "spriteV": null,
     "idV": null,
     "loadLive": false,
-    "autoUpdateSprites": false
+    "autoUpdateSprites": false,
+    "autoUpdateIds": false
 }
