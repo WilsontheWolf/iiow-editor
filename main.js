@@ -88,6 +88,9 @@ if (!gotTheLock) {
       if (config.spriteV < final.sprites && config.autoUpdateSprites) {
         updateSprites()
       }
+      if (config.idV < final.ids && config.autoUpdateSprites) {
+        updateIds()
+      }
     });
 
   }).on("error", (err) => {
@@ -175,6 +178,18 @@ if (!gotTheLock) {
     event.reply('sprites', responce)
   })
 
+  ipcMain.on('ids', async (event, command) => {
+    let responce
+    try {
+      responce = updateIds()
+    }
+    catch (e) {
+      console.error(e)
+      responce = e
+    }
+    event.reply('sprites', responce)
+  })
+
   ipcMain.on('getConfig', async (event) => {
     event.reply('config', config)
   })
@@ -204,6 +219,44 @@ if (!gotTheLock) {
         if (err)
           return console.error(err)
         fs.unlink(`${process.env.TMP}\\iiow-editor-sprites-tmp.zip`, err => {
+          if (err)
+            console.error(err)
+        })
+      })
+      https.get('https://raw.githubusercontent.com/WilsontheWolf/iiow-editor-api/master/latest.json', (resp) => {
+        let data = '';
+
+        // A chunk of data has been recieved.
+        resp.on('data', (chunk) => {
+          data += chunk;
+        });
+
+        // The whole response has been received. Print out the result.
+        resp.on('end', () => {
+          let final = JSON.parse(data)
+          if (final) {
+          config.spriteV = final.sprites
+          writeConfig(config)
+          }
+        });
+
+      }).on("error", (err) => {
+        global.version.newest = 'unknown'
+        console.error("Error: " + err.message);
+      });
+    })
+  };
+
+  const updateIds = async () => {
+    const file = fs.createWriteStream(`${process.env.TMP}\\iiow-editor-ids-tmp.zip`);
+    https.get('https://raw.githubusercontent.com/WilsontheWolf/iiow-editor-api/master/ids.zip', function (response) {
+      response.pipe(file)
+    })
+    file.on('finish', () => {
+      extract(`${process.env.TMP}\\iiow-editor-ids-tmp.zip`, { dir: process.env.LOCALAPPDATA + '\\iiow-editor\\data\\ids' }, function (err) {
+        if (err)
+          return console.error(err)
+        fs.unlink(`${process.env.TMP}\\iiow-editor-ids-tmp.zip`, err => {
           if (err)
             console.error(err)
         })

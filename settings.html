@@ -15,7 +15,8 @@
       previews</button><br hidden>
     <button id="autoUpdateSprites" class="settings" onclick="toggle('autoUpdateSprites')">Automatically download new
       sprites when they are released</button><br>
-      <button id="autoUpdateSprites" class="settings" onclick="updateSprites()">Update/Download Sprites</button>
+      <button id="updateSprites" class="settings" onclick="updateSprites()">Update/Download Sprites</button>
+      <button id="updateIds" class="settings" onclick="updateIds()">Update/Download Sprites</button>
       <br> <br>
   </div>
   <button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png width=30><br>< back home</button> 
@@ -31,6 +32,7 @@
     })
     function save() { ipcRenderer.send('setConfig', config) }
     function updateSprites() { ipcRenderer.send('sprites') }
+    function updateIds() { ipcRenderer.send('ids') }
     function toggle(item) {
       if (item) {
         let i = document.getElementById(item)
