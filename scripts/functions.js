@@ -193,7 +193,7 @@ module.exports = (client) => {
 
   client.getIds = (v) => {
     try {
-      return require(`../assets/ids/${v}.json`)
+      return require(`${process.env.LOCALAPPDATA}/iiow-editor/data/ids/${v}.json`)
     }
     catch (e) {
       return
