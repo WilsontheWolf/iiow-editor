@@ -5,14 +5,20 @@ module.exports = (fileLocation = require('electron').remote.getGlobal('loaded').
   client = {}
   require('./functions')(client)
   let save = client.readLocalFile(fileLocation)
-  if (!save.exists || !save.exists.version) return
-  let version = parseFloat(save.exists.version)
+  let version
+  let exists = true
+  if (!save.exists || !save.exists.version) {
+    if (!save.version) exists = false
+  }
+  if(!exists) return
+  version = save.exists ? parseFloat(save.exists.version) : parseFloat(save.version.game)
   if (!version) return new Error('Error reading version!')
   return convertSave(save, version)
 }
 function convertSave(save, version) {
   if (version <= 6.1) return convert5(save)
-  if (version >= 6.2) return convert62(save)
+  if (version >= 6.2 && version < 7.4) return convert62(save)
+  if (version >= 7.4) return convert74(save)
 }
 
 function convert5(save) {
@@ -43,7 +49,7 @@ function convert62(save) {
     extra.push('0')
     extra.push('0')
   }
-  if (version >= 7.2 /*&& version < 7.2*/) {
+  if (version >= 7.2) {
     max = 8
     extra.push('0')
     extra.push('0')
@@ -60,6 +66,43 @@ function convert62(save) {
   save.resources.resources.split(" ").forEach(r => {
     if (r) resources.push(parseFloat(r))
   })
+  let realm = { v: version, data: save.realm, realm: 1 }
+  let inventory = save.inventory
+  inventory.inventory = client.parse_inv(inventory.inventory, version)
+  return {
+    island: island,
+    resources: resources,
+    inventory: inventory,
+    realm: realm,
+    version: version
+  }
+}
+
+function convert74(save) {
+  let island = save.player.data.split(' ')
+  let extra = []
+  let max = 8
+  let version = parseFloat(save.version.game)
+  if(version >= 7.5) {
+    max = island.indexOf('&')
+    island.splice(max, 1)
+  }
+  for (i = 0; i < max; i++) {
+    extra.push(island.shift())
+  }
+  island = client.parse_island(island, null, true, version)
+  fIsland = client.parse_islandId(island, version)
+  if(fIsland) island = fIsland
+  island.extra = extra
+  let resources = []
+  if(save.resources){
+  save.resources.resources.split(" ").forEach(r => {
+    if (r) resources.push(parseFloat(r))
+  })}
+  else {
+    save.game.resources.split(" ").forEach(r => {
+      if (r) resources.push(parseFloat(r))
+    })}
   let realm = { v: version, data: save.realm, realm: 1 }
   let inventory = save.inventory
   inventory.inventory = client.parse_inv(inventory.inventory, version)

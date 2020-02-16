@@ -182,6 +182,10 @@ module.exports = (client) => {
       if (other.length > 6) other.forEach((i, index) => {
         if (index < 5 || !i) return
         i = i.split(':')
+        if (v >= 7.4) {
+          i[0] = i[0].slice(1)
+          name = name.slice(1)
+        }
         i[0] = ids.properties[`${i[0]}`].toLowerCase()
         other[index] = i.join(':')
       })
@@ -202,7 +206,7 @@ module.exports = (client) => {
 
   client.parse_islandId = (island, v) => {
     let ids = client.getIds(v)
-    if (!ids) return new Error(`No Ids file found for v${v}!`)
+    if (!ids) return 
     for (let i = 0; i < 12; i++) {
       for (let j = 0; j < 12; j++) {
         if (island.block[i][j]) {
