@@ -10,7 +10,7 @@ module.exports = (fileLocation = require('electron').remote.getGlobal('loaded').
   if (!save.exists || !save.exists.version) {
     if (!save.version) exists = false
   }
-  if(!exists) return
+  if (!exists) return
   version = save.exists ? parseFloat(save.exists.version) : parseFloat(save.version.game)
   if (!version) return new Error('Error reading version!')
   return convertSave(save, version)
@@ -60,7 +60,7 @@ function convert62(save) {
   if (version < 6.4) extra.push("0")
   island = client.parse_island(island, null, true, version)
   fIsland = client.parse_islandId(island, version)
-  if(fIsland) island = fIsland
+  if (fIsland) island = fIsland
   island.extra = extra
   let resources = []
   save.resources.resources.split(" ").forEach(r => {
@@ -83,7 +83,7 @@ function convert74(save) {
   let extra = []
   let max = 8
   let version = parseFloat(save.version.game)
-  if(version >= 7.5) {
+  if (version >= 7.5) {
     max = island.indexOf('&')
     island.splice(max, 1)
   }
@@ -92,20 +92,22 @@ function convert74(save) {
   }
   island = client.parse_island(island, null, true, version)
   fIsland = client.parse_islandId(island, version)
-  if(fIsland) island = fIsland
+  if (fIsland) island = fIsland
   island.extra = extra
   let resources = []
-  if(save.resources){
-  save.resources.resources.split(" ").forEach(r => {
-    if (r) resources.push(parseFloat(r))
-  })}
+  if (save.resources) {
+    save.resources.resources.split(" ").forEach(r => {
+      if (r) resources.push(parseFloat(r))
+    })
+  }
   else if (save.game.resources) {
     save.game.resources.split(" ").forEach(r => {
       if (r) resources.push(parseFloat(r))
-    })}
-    else {
-      resources = [parseFloat(save.game.money), null, null]
-    }
+    })
+  }
+  else {
+    resources = [parseFloat(save.game.money), null, null]
+  }
   let realm = { v: version, data: save.realm, realm: 1 }
   let inventory = save.inventory
   inventory.inventory = client.parse_inv(inventory.inventory, version)
@@ -114,6 +116,7 @@ function convert74(save) {
     resources: resources,
     inventory: inventory,
     realm: realm,
-    version: version
+    version: version,
+    ids: save.map
   }
 }
