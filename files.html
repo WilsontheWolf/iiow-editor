@@ -106,11 +106,13 @@
                                 try {
                                     let v = 'v' + save.version.toString()
                                     let mon = save.resources[0] > 99999 ? '99999+' : save.resources[0].toString()
+                                    let l = ''
+                                    if(typeof(save.resources[1]) == 'number' ){
                                     let lo = save.resources[2] > 9 ? '9+' : save.resources[2].toString()
                                     let lt = save.resources[1] > 9 ? '9+' : save.resources[1].toString()
-                                    let l = lo == lt ? lo : lo + '/' + lt
+                                    l = lo == lt ? lo : lo + '/' + lt}
                                     if (l.length + mon.length + v.length >= 15) statsDetails.className = 'smallfont'
-                                    statsDetails.innerHTML = `${v} ${l}<img src="./assets/core.png" class="textimg"> <img src="./assets/money.png" class="textimg">${mon}`
+                                    statsDetails.innerHTML = `${v} ${l ? l+'<img src="./assets/core.png" class="textimg">' : ''} <img src="./assets/money.png" class="textimg">${mon}`
                                 }
                                 catch (e) {
                                     statsDetails.innerHTML = 'Error!'

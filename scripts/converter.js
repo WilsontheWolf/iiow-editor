@@ -99,10 +99,13 @@ function convert74(save) {
   save.resources.resources.split(" ").forEach(r => {
     if (r) resources.push(parseFloat(r))
   })}
-  else {
+  else if (save.game.resources) {
     save.game.resources.split(" ").forEach(r => {
       if (r) resources.push(parseFloat(r))
     })}
+    else {
+      resources = [parseFloat(save.game.money), null, null]
+    }
   let realm = { v: version, data: save.realm, realm: 1 }
   let inventory = save.inventory
   inventory.inventory = client.parse_inv(inventory.inventory, version)
