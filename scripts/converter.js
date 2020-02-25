@@ -91,7 +91,7 @@ function convert74(save) {
     extra.push(island.shift())
   }
   island = client.parse_island(island, null, true, version)
-  fIsland = client.parse_islandId(island, version)
+  fIsland = client.parse_islandId(island, version, save.map)
   if (fIsland) island = fIsland
   island.extra = extra
   let resources = []

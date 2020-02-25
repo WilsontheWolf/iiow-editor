@@ -127,7 +127,7 @@ module.exports = (client) => {
       let buffer
       if (!island) buffer = save_file.island.island.split(' ');
       else buffer = file
-      for (let i = 6; i < buffer.length; i+=3) {
+      for (let i = 6; i < buffer.length; i += 3) {
         let val = buffer[i]
         let int = parseInt(val)
         if (int) {
@@ -135,7 +135,7 @@ module.exports = (client) => {
           for (let j = 0; j < int; j++) string += ' _ _ _'
           string = string.trim()
           buffer[i] = string
-          i ++
+          i++
         }
       }
       buffer = buffer.join(' ').split(' ')//this resets it cause the thing takes an array and it is an improperly formatted one rn
@@ -204,15 +204,32 @@ module.exports = (client) => {
     }
   }
 
-  client.parse_islandId = (island, v) => {
-    let ids = client.getIds(v)
-    if (!ids) return 
+  client.convertToIds = (items, props) => {
+    items = items.split(' ')
+    props = props.split(' ')
+    console.log(items, props)
+    let obj = { properties: {}, items: {} }
+    items.forEach((a, i) => {
+      obj.items[i] = a.toLowerCase()
+    })
+    props.forEach((a, i) => {
+      obj.properties[i] = a.toLowerCase()
+    })
+    console.log(obj)
+    return obj
+  }
+
+  client.parse_islandId = (island, v, id) => {
+    let ids = client.getIds(v) || client.convertToIds(id.item, id.property)
+    if (!ids && !id) return
+    console.log(ids)
     for (let i = 0; i < 12; i++) {
       for (let j = 0; j < 12; j++) {
         if (island.block[i][j]) {
           let name
           let other = island.block[i][j].split("|")
           if (v >= 6.2) {
+            if (v >= 7.4) other[1] = other[1].slice(1)
             name = other[1];
             while (!other[0])
               other.shift()
@@ -223,6 +240,7 @@ module.exports = (client) => {
           if (other.length > 6) other.forEach((i, index) => {
             if (index < 5 || !i) return
             i = i.split(':')
+            if (v >= 7.4) i[0] = i[0].slice(1)
             i[0] = ids.properties[`${i[0]}`].toLowerCase()
             other[index] = i.join(':')
           })
@@ -232,6 +250,7 @@ module.exports = (client) => {
           let name
           let other = island.attachment[i][j].split("|")
           if (v >= 6.2) {
+            if (v >= 7.4) other[1] = other[1].slice(1)
             name = other[1];
             while (!other[0])
               other.shift()
