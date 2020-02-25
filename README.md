@@ -3,11 +3,11 @@ A save file viewer for [IIslands of WAR](https://jwiggs.itch.io/iislands-of-war)
 
 # Features:
 - compatible with all saves v5 up
-- view an island preview (this needs to be manually updated as of right now)
+- view an island preview ~~(this needs to be manually updated as of right now)~~ (as long as jwiggs doesn't change anything this will work with new version!)
 
 # Todo:
-- auto update ids
 - modify saves
+- preview saved islands
 
 # How Do I Install It
 You can download the latest built version in the [releases](https://github.com/WilsontheWolf/iiow-editor/releases) section.
