@@ -2,13 +2,13 @@ const fs = require('fs')
 const ini = require('ini')
 const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
-module.exports = (client) => {
+module.exports = ($) => {
 
-  client.Rnd = (min, max) => {
+  $.Rnd = (min, max) => {
     return Math.floor((Math.random() * (max - min)) + min)
   }
 
-  client.getFiles = async (dir) => {
+  $.getFiles = async (dir) => {
 
     const cmdFiles = await readdir(dir);
     let legacy = []
@@ -21,14 +21,14 @@ module.exports = (client) => {
     return [current, legacy]
   }
 
-  client.readLocalFile = (file = `./readyiisland.ini`) => {
+  $.readLocalFile = (file = `./readyiisland.ini`) => {
     let result
-    if (fs.existsSync(file) && fs.lstatSync(file).isDirectory()) result = client.readLocalFiles(file)
-    else result = client.readFile(fs.readFileSync(file, 'utf-8'))
+    if (fs.existsSync(file) && fs.lstatSync(file).isDirectory()) result = $.readLocalFiles(file)
+    else result = $.readFile(fs.readFileSync(file, 'utf-8'))
     return result
   }
 
-  client.readLocalFiles = (file = `./readyiisland.ini`) => {
+  $.readLocalFiles = (file = `./readyiisland.ini`) => {
     if (fs.existsSync(file) && !fs.lstatSync(file).isDirectory()) return
     let results = fs.readdirSync(file)
     files = []
@@ -37,7 +37,7 @@ module.exports = (client) => {
       if (fs.lstatSync(n).isDirectory()) return
       let c = fs.readFileSync(n, 'utf-8')
       if (!c) return
-      let s = client.readFile(c)
+      let s = $.readFile(c)
       if (!s) return
       files.push(s)
     })
@@ -48,26 +48,26 @@ module.exports = (client) => {
     return save
   }
 
-  client.readFile = (file) => {
+  $.readFile = (file) => {
     let result = ini.parse(file)
     return result
   }
-  client.saveFile = (object) => {
+  $.saveFile = (object) => {
     let result = ini.stringify(object)
     return result
   }
 
-  client.finder = async (path = require('electron').remote.getGlobal('loaded').path) => {
+  $.finder = async (path = require('electron').remote.getGlobal('loaded').path) => {
     let files
-    client = {}
-    require('./functions')(client)
-    files = await client.getFiles(path)
+    $ = {}
+    require('./functions')($)
+    files = await $.getFiles(path)
     return files
 
   }
 
 
-  client.parse_island_5 = (file, object = true, island = false) => {
+  $.parse_island_5 = (file, object = true, island = false) => {
     try {
       let parsed_save = {
         "block": [],
@@ -76,7 +76,7 @@ module.exports = (client) => {
       };
       let save_file
       if (!island) {
-        if (!object) save_file = client.readFile(file);
+        if (!object) save_file = $.readFile(file);
         else save_file = file
       }
       let buffer
@@ -117,11 +117,11 @@ module.exports = (client) => {
       return parsed_save;
     } catch (e) { console.error(e); };
   };
-  client.parse_island_7 = (file, object = true, island = false) => {
+  $.parse_island_7 = (file, object = true, island = false) => {
     try {
       let save_file
       if (!island) {
-        if (!object) save_file = client.readFile(file);
+        if (!object) save_file = $.readFile(file);
         else save_file = file
       }
       let buffer
@@ -139,14 +139,14 @@ module.exports = (client) => {
         }
       }
       buffer = buffer.join(' ').split(' ')//this resets it cause the thing takes an array and it is an improperly formatted one rn
-      return client.parse_island_5(buffer, false, true)
+      return $.parse_island_5(buffer, false, true)
     } catch (e) { console.error(e); };
   };
-  client.parse_island = (file, object = true, island = false, version) => {
-    if (version >= 7.2) return client.parse_island_7(file, object, island)
-    else return client.parse_island_5(file, object, island)
+  $.parse_island = (file, object = true, island = false, version) => {
+    if (version >= 7.2) return $.parse_island_7(file, object, island)
+    else return $.parse_island_5(file, object, island)
   };
-  client.reverse_island = (par) => {
+  $.reverse_island = (par) => {
     try {
       let rev = par.coreX + ' ' + par.coreY + ' ' + par.islandWidth + ' ' + par.islandHeight + ' ' + par.islandOffsetX + ' ' + par.islandOffsetY;
       for (let i = 0; i < 12; i++) {
@@ -160,10 +160,10 @@ module.exports = (client) => {
 
 
   // `await client.wait(1000);` to "pause" for 1 second.
-  client.wait = require("util").promisify(setTimeout);
+  $.wait = require("util").promisify(setTimeout);
 
-  client.parse_inv = (inv, v) => {
-    let ids = client.getIds(v)
+  $.parse_inv = (inv, v) => {
+    let ids = $.getIds(v)
     if (!ids) return new Error(`No Ids file found for v${v}!`)
     inv = inv.split(' ')
     inv.forEach((i, index) => {
@@ -195,7 +195,7 @@ module.exports = (client) => {
     return inv.join(' ')
   }
 
-  client.getIds = (v) => {
+  $.getIds = (v) => {
     try {
       return require(`${process.env.LOCALAPPDATA}/iiow-editor/data/ids/${v}.json`)
     }
@@ -204,10 +204,9 @@ module.exports = (client) => {
     }
   }
 
-  client.convertToIds = (items, props) => {
+  $.convertToIds = (items, props) => {
     items = items.split(' ')
     props = props.split(' ')
-    console.log(items, props)
     let obj = { properties: {}, items: {} }
     items.forEach((a, i) => {
       obj.items[i] = a.toLowerCase()
@@ -215,14 +214,12 @@ module.exports = (client) => {
     props.forEach((a, i) => {
       obj.properties[i] = a.toLowerCase()
     })
-    console.log(obj)
     return obj
   }
 
-  client.parse_islandId = (island, v, id) => {
-    let ids = client.getIds(v) || client.convertToIds(id.item, id.property)
+  $.parse_islandId = (island, v, id) => {
+    let ids = $.getIds(v) || $.convertToIds(id.item, id.property)
     if (!ids && !id) return
-    console.log(ids)
     for (let i = 0; i < 12; i++) {
       for (let j = 0; j < 12; j++) {
         if (island.block[i][j]) {
@@ -263,5 +260,45 @@ module.exports = (client) => {
       }
     }
     return island
+  }
+
+  $.export = (file, ini, format = 'raw') => {
+    let result
+    if (format == 'raw') result = $.exportRaw(file)
+
+    if (ini) result = $.saveFile(result)
+    return result
+  }
+
+  $.exportRaw = (file) => {
+    let result
+    let dir = false
+    if (fs.existsSync(file) && fs.lstatSync(file).isDirectory()) {
+      dir = true
+      let results = fs.readdirSync(file)
+      result = {}
+      results.forEach(f => {
+        let n = file + '\\' + f
+        if (fs.lstatSync(n).isDirectory()) return
+        let c = fs.readFileSync(n, 'utf-8')
+        if (!c) return
+        let s = $.readFile(c)
+        if (!s) return
+        result[f] = s
+      })
+    }
+    else result = $.readFile(fs.readFileSync(file, 'utf-8'))
+    let name = file.split('\\')
+    name = name[name.length - 1]
+    let data = {
+      iioweditor: {
+        format: 'raw',
+        version: 1,
+        isDirectory: dir,
+        name: name
+      },
+      data: result
+    }
+    return data
   }
 }
