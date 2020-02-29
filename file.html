@@ -25,11 +25,24 @@
       else if (file) document.write(`Save Version: v${file.version}
         <p><button id="settings" class="nohover" ><img src=./assets/money.png width=30 ><br>${file.resources[0]}</button></p>`)
       else document.write(`<p>Error reading save!<p>`)
+      function download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+      }
     </script>
     <p id="info">
-      <canvas id="preview" width="384" height="384"
-        style="border:1px solid #c3c3c3;position: absolute;top: 250px;"></canvas>
-      <p><button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png
+    </p>
+        <canvas id="preview" width="384" height="384"
+            style="border:1px solid #c3c3c3;position: absolute;top: 250px;"></canvas>
+        <button id="settings" class="menu" onclick="location.href='./index.html';"><img src=./assets/home.png
             width=30><br>
           < back home</button>
       </p>
@@ -45,6 +58,7 @@
   drawIsland(2, file, ctx)
     .catch(e => {
       console.error(e)
+      canvas.style = "border:1px solid #c3c3c3;position: absolute;top: 300px;"
       if (typeof (e) != 'number') document.getElementById("info").innerText = `There was a error while loading this iisland. Please make sure you download the sprites and id files in the settings.`
       else document.getElementById("info").innerText = `There were ${e} error${e == 1 ? '' : 's'} while loading this iisland. Please make sure you download the sprites and id files in the settings.`
     })

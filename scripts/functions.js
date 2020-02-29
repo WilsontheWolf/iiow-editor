@@ -142,8 +142,15 @@ module.exports = ($) => {
       return $.parse_island_5(buffer, false, true)
     } catch (e) { console.error(e); };
   };
-  $.parse_island = (file, object = true, island = false, version) => {
-    if (version >= 7.2) return $.parse_island_7(file, object, island)
+
+  $.parse_island_file = (file, version) => {
+    if (version < 7.4) return
+    let island = $.parse_island_7(file.split(' '), null, true)
+    console.log(island)
+  }
+  $.parse_island = (file, object = true, island = false, version, islandFile = false) => {
+    if (version >= 7.2 && islandFile) return $.parse_island_file(file, version)
+    else if (version >= 7.2) return $.parse_island_7(file, object, island)
     else return $.parse_island_5(file, object, island)
   };
   $.reverse_island = (par) => {
@@ -282,12 +289,12 @@ module.exports = ($) => {
         if (fs.lstatSync(n).isDirectory()) return
         let c = fs.readFileSync(n, 'utf-8')
         if (!c) return
-        let s = $.readFile(c)
-        if (!s) return
-        result[f] = s
+        //let s = $.readFile(c)
+        //if (!s) return
+        result[f] = c
       })
     }
-    else result = $.readFile(fs.readFileSync(file, 'utf-8'))
+    else result = fs.readFileSync(file, 'utf-8')
     let name = file.split('\\')
     name = name[name.length - 1]
     let data = {
