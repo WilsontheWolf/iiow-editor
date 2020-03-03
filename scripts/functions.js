@@ -28,6 +28,13 @@ module.exports = ($) => {
     return result
   }
 
+  $.readLocalIslandFile = (file = `./readyiisland.ini`) => {
+    let result
+    if (fs.existsSync(file) && fs.lstatSync(file).isDirectory()) result = false
+    else result = $.parse_island(fs.readFileSync(file, 'utf-8'), null, null, null, true)
+    return result
+  }
+
   $.readLocalFiles = (file = `./readyiisland.ini`) => {
     if (fs.existsSync(file) && !fs.lstatSync(file).isDirectory()) return
     let results = fs.readdirSync(file)
@@ -143,13 +150,12 @@ module.exports = ($) => {
     } catch (e) { console.error(e); };
   };
 
-  $.parse_island_file = (file, version) => {
-    if (version < 7.4) return
+  $.parse_island_file = (file) => {
     let island = $.parse_island_7(file.split(' '), null, true)
-    console.log(island)
+    return island
   }
   $.parse_island = (file, object = true, island = false, version, islandFile = false) => {
-    if (version >= 7.2 && islandFile) return $.parse_island_file(file, version)
+    if (islandFile) return $.parse_island_file(file)
     else if (version >= 7.2) return $.parse_island_7(file, object, island)
     else return $.parse_island_5(file, object, island)
   };

@@ -10,7 +10,7 @@ module.exports = (fileLocation = require('electron').remote.getGlobal('loaded').
   if (!save.exists || !save.exists.version) {
     if (!save.version) exists = false
   }
-  if (!exists) return
+  if (!exists) return {island: client.readLocalIslandFile(fileLocation), islandFile: true}
   version = save.exists ? parseFloat(save.exists.version) : parseFloat(save.version.game)
   if (!version) return new Error('Error reading version!')
   return convertSave(save, version)
