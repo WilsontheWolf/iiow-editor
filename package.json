@@ -14,7 +14,7 @@
     "url": "https://wilsonthewolf.glitch.me"
   },
   "devDependencies": {
-    "electron": "^8.1.0"
+    "electron": "^8.5.2"
   },
   "dependencies": {
     "discord-rpc": "^3.1.0",
